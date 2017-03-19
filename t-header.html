@@ -1,0 +1,412 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-tabs/paper-tabs.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-media-query/iron-media-query.html">
+<link rel="import" href="../paper-tabs/paper-tab.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-menu/paper-menu.html">
+<link rel="import" href="../paper-item/paper-icon-item.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../iron-icons/maps-icons.html">
+<link rel="import" href="../iron-icons/communication-icons.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+
+<!--
+	`t-header`
+	Header component
+
+	@demo demo/index.html 
+-->
+
+<dom-module id="t-header">
+	<template>
+		<style is="custom-style" include="iron-flex iron-flex-alignment">
+
+:host {
+	display: block;
+	font-size: 12px;
+
+    --iron-icon-width:18px;
+    --iron-icon-height:18px;
+	--paper-input-container: {
+		padding:0;
+	}
+}
+.action-button{
+	margin:0;
+	padding: 0 2px;
+}
+.topbar-left{
+	padding: 5px 0;
+}
+
+.dropdown{
+	margin: 0 10px;
+	margin-left: 0;
+	max-width: 140px;
+	--paper-input-container-label: {
+		font-size: 12px;
+		color:#a9afdf;
+	};
+--paper-input-container-underline:{
+	display: none;
+}
+--paper-input-container-input-color: #a9afdf;
+--paper-input-container-input:{
+	font-size: 12px;
+}
+}
+.currency-code{
+	width: 50px;
+}
+        .right-topbar > div{
+          margin-right: 10px;
+        }
+				.secondary-menu{
+					margin-left: 10px;
+					position: relative;
+				}
+				.logo{
+					width: 110px;
+				}
+
+
+				.topbar{
+					background: #283593;
+					color: #a9afdf;
+					padding: 5px 6%;
+				}
+
+				.item{
+					margin: 0 10px;
+				}
+
+				.secondary-menu{
+					/* position: absolute; */
+					float: right;
+					/* right: 0; */
+				}
+
+				.notification-count{
+					width: 16px;
+					height: 16px;
+					border-radius: 50%;
+					display: inline-block;
+					background: red;
+					font-size: 12px;
+					line-height: 16px;
+					text-align: center;
+					margin-left: 4px;
+					position:absolute;
+					left:10px;
+					color: #fff;
+				}
+				.flag{
+					margin-top:5px;
+					margin-right: 2px;
+				}
+
+				.menu-content{
+					margin: 0 6%;
+					color: #a9afdf;
+				}
+
+				.paper-header-panel{
+					background:#3f51b5;
+				}
+
+        .right-text{
+          margin-left: 10px;
+        }
+				.tabs{
+					height: 100%;
+					margin: 30px;
+					text-transform: uppercase;
+				}
+				.right-item{
+					position: relative;
+					margin-top: 5px;
+				}
+				.primary-menu{
+					/* width: 600px; */
+					font-size: 12px;
+					height: 64px;
+					color: #a9afdf;
+				}
+				.icon{
+					margin-right: 20px;
+				}
+				@media screen and (max-width: 1024px) and (min-width: 700px) {
+					.menu-content{
+						margin: 0 1%;
+					}
+					.primary-menu{
+						/* width: 500px; */
+					}
+					.tabs{
+						margin: 0;
+					}
+					.notification-count{
+						/* margin-left: -5px; */
+					}
+					.topbar{
+						padding: 5px 1%;
+					}
+					.icon{
+						margin-right: 5px;
+					}
+          .item{
+            margin-right:5px;
+          }
+				}
+
+				@media only screen and (min-width : 320px) and (max-width : 480px) {
+					.menu-content{
+						margin: 0;
+					}
+					.logo{
+						margin: 0 20px;
+						width: 100px;
+					}
+          .right-item{
+            margin-top:10px;
+          }
+					.icon{
+						margin: 0 ;
+						margin-right: 10px;
+					}
+				.item{
+					margin:5px;
+				}
+
+					.topbar{
+						padding: 5px 1%;
+					}
+				}
+		</style>
+		<div class="layout horizontal topbar">
+			<div class="flex layout horizontal topbar-left"> 
+				<div class="item"><iron-icon class="icon" icon="[[dataOptions.topBar.phoneIcon]]"></iron-icon>[[dataOptions.topBar.phone]]</div>
+				<div hidden$="[[isMobile]]" class="item"><iron-icon class="icon" icon="[[dataOptions.topBar.emailIcon]]"></iron-icon>[[dataOptions.topBar.email]]</div>
+			</div>
+
+			<!-- <paper&#45;icon&#45;button icon="menu" class="dropdown&#45;trigger"></paper&#45;icon&#45;button> -->
+			<!-- <div> -->
+			<!-- <iron&#45;icon class="icon dropdown&#45;trigger" icon="communication:phone"></iron&#45;icon>United States(English) USD -->
+			<div class="layout horizontal right-topbar "> 
+				<div class="right-item layout horizontal" hidden$="[[notDesktop]]">
+          <iron-icon class="icon" icon="search"></iron-icon>
+          <div class="notification-count">2</div>
+          <div class="right-text" >Recent Searches</div></div>
+				<iron-icon hidden$="[[isMobile]]" class="flag" icon="[[currentFlag]]"></iron-icon>
+				<div hidden$="[[isMobile]]">
+					<paper-dropdown-menu  no-label-float class="dropdown" on-iron-select="_languageChanged">
+						<paper-listbox class="dropdown-content" selected="[[currentLanguage]]">
+							<template is="dom-repeat" items="[[dataOptions.languages]]">
+								<paper-item data-icon$="[[item.icon]]"><iron-icon class="icon" icon="[[item.icon]]"></iron-icon>[[item.label]]</paper-item>
+							</template>
+						</paper-listbox>
+					</paper-dropdown-menu>
+
+					<paper-dropdown-menu hidden$="[[isTablet]]"label="Dinosaurs" on-iron-select="_currencyChanged" no-label-float class="dropdown currency-code">
+						<paper-listbox class="dropdown-content" selected="[[currentCurrency]]">
+							<template is="dom-repeat" items="[[dataOptions.currencies]]">
+								<paper-item data-code="[[item.label]]">[[item.value]]</paper-item>
+							</template>
+						</paper-listbox>
+					</paper-dropdown-menu>
+
+				</div>
+        <div class="right-item">
+          <iron-icon icon="account-circle"></iron-icon>
+					<template is="dom-if" if="[[isLoggedIn]]">
+						<!-- <a p>Sign Up</a>/<a>Sign In </a> -->
+						<paper-button class="action-button">Sign Up</paper-button>/<paper-button class="action-button">Sign In</paper-button>
+					</template>
+					<template is="dom-if" if="[[!isLoggedIn]]">
+						<a>Shailesh Srivastava</a>
+					</template>
+				</div>
+
+			</div>
+			</div>
+			<iron-media-query query="(max-width: 1024px) and (min-width: 700px)" query-matches="{{isTablet}}"></iron-media-query>
+			<iron-media-query query="(min-device-width : 320px) and (max-device-width : 480px)" query-matches="{{isMobile}}"></iron-media-query>
+			<paper-header-panel class="flex paper-header-panel">
+				<paper-toolbar class="menu-content" >
+					<iron-icon class="icon" icon="menu" hidden$="[[!isMobile]]"></iron-icon>
+					<img class="logo" src="[[dataOptions.logo]]" />
+
+					<div class="flex tabs" >
+						<paper-tabs hidden$="[[isMobile]]" class="flex primary-menu" scrollable selected="{{dataOptions.primaryMenu.selectedIndex}}" on-iron-select="tabChanged">
+							<template is="dom-repeat" items="[[dataOptions.primaryMenu.items]]">
+								<paper-tab><iron-icon class="icon" icon="[[item.icon]]"></iron-icon>[[item.label]]</paper-tab>
+							</template>
+						</paper-tabs>
+					</div>
+					<div class="flex-2 end-justified horizontal layout secondary-menu">
+						<template is="dom-repeat" items="[[dataOptions.secondaryMenu]]">
+							<div class="secondary-menu horizontal layout"><iron-icon class="icon" icon="[[item.icon]]"></iron-icon><div hidden$="[[hideCount(item.count)]]" class="notification-count">[[item.count]]</div><div hidden$="[[notDesktop]]">[[item.label]]</div></div>
+						</template>
+					</div>
+				</paper-toolbar>
+			</paper-header-panel>
+
+			<!-- <paper&#45;drawer&#45;panel drawer> -->
+			<!--   <div drawer> Drawer panel... </div> -->
+			<!--   <div main> Main panel... </div> -->
+			<!-- </paper&#45;drawer&#45;panel> -->
+			<!--  -->
+	</template>
+
+	<script>
+Polymer({
+
+	is: 't-header',
+
+	// listeners: {
+	// 	'data-options-changed': 'dataOptionsChanged'
+	// },
+	//
+	properties: {
+		currentLanguage:{
+			type: Number,
+			value: 0
+		},
+		currentCurrency:{
+			type: Number,
+			value: 0
+		},
+		currentFlag:{
+			type: Number,
+			value: 0
+		},
+		isLoggedIn:{
+			type: Boolean,
+			value: true
+		},
+		dataOptions: {
+			type: Object,
+			notify: true,
+			value: {
+				primaryMenu :{
+					selectedIndex:0,
+					items: [
+					{
+						label : 'Flight',
+						icon : 'maps:flight',
+						url : '/hotel'
+					},
+					{
+						label : 'Hotel',
+						icon : 'maps:hotel',
+						eventName : 'activity-option-selected'
+					},
+					{
+						label : 'Car',
+						icon : 'maps:directions-car',
+						eventName : 'activity-option-selected'
+					},
+					{
+						label : 'Activity',
+						icon : 'maps:directions-run',
+						eventName : 'activity-option-selected'
+					}
+					]
+				},
+				secondaryMenu :[
+				{
+					label : "Trip Cart",
+					icon : "shopping-cart",
+					eventName : "trip-cart-link-clicked",
+					count: 2
+				}
+				],
+				topBar : {
+					signUp : {
+						label : 'SignUp',
+						icon : 'icon-url',
+						url:'/register'
+					},
+					signIn : {
+						label : 'SignIn',
+						icon : 'icon-url',
+						url : '/login'
+					},
+					profile :{
+						label : 'Profile',
+						url : '/profile'
+					},
+					mytrips : {
+						label : 'My Trips',
+						url : '/mytrips'
+					},
+					email : "enquiry@travelnxt.com",
+					emailIcon : 'mail',
+					phone : "1800-948-4455",
+					phoneIcon : 'communication:phone'
+				},        
+				languages : [ {icon:"flag", label : "United State(English)", code : "en-us" },{icon:"flag", label : "United State(English)", code : "en-us" } ],
+				logo : "/travelnxt.png",
+				currencies : [ { label : "US Doller", value :"USD" }, { label : "US Doller", value :"USD" }],
+				event : {
+					currencyChanged : 'currency-selection-changed'
+				}
+			}
+		},
+		user: {
+			name : "John doe",
+			point : '5000pt'
+		},
+		notDesktop: {
+			type: Boolean,
+			// when `first` or `last` changes `computeFullName` is called once
+			// and the value it returns is stored as `fullName`
+			computed: 'isSmallScreen(isTablet, isMobile)'
+		}
+	},
+
+	_currencyChanged: function(e){
+		let selectedItem = e.target.selectedItem;
+		if(selectedItem){
+			console.log(selectedItem);
+		}
+	},
+
+	_languageChanged: function(e){
+		let selectedItem = e.target.selectedItem;
+		if(selectedItem){
+			this.currentFlag = selectedItem.getAttribute('data-icon');
+			console.log(selectedItem);
+		}
+	},
+
+	tabChanged: function(e,index){
+		const header = this;
+		const selectedTab = this.dataOptions.primaryMenu.items.filter((item,index) => index === header.dataOptions.primaryMenu.selectedIndex);
+		if(selectedTab.length> 0){
+			if(selectedTab[0].eventName){
+				this.fire(selectedTab[0].eventName);
+			}
+			else if(selectedTab[0].url) {
+				// window.location.href=  selectedTab[0].url;
+			}
+		}
+	},
+
+	hideCount: function(count){
+		return count === 0;
+	},
+
+	isSmallScreen: function(isTablet, isMobile){
+		return isTablet || isMobile;
+	}
+
+});
+	</script>
+</dom-module>
