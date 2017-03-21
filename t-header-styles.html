@@ -36,7 +36,7 @@
   max-width: 140px;
   --paper-input-container-label: {
     font-size: 12px;
-    color:#a9afdf;
+    color: var(--t-header-color,#a9afdf);
   };
 	--paper-input-container-label: {
 		font-size: 12px;
@@ -44,7 +44,7 @@
 --paper-input-container-underline:{
   display: none;
 }
---paper-input-container-input-color: #a9afdf;
+--paper-input-container-input-color: var(--t-header-color,#a9afdf);
 --paper-input-container-input: {
   font-size: 12px;
   line-height: 48px;
@@ -72,8 +72,8 @@
 
 
         .topbar{
-          background: #283593;
-          color: #a9afdf;
+          background: var(--t-header-topbar-bg, #283593);
+          color: var(--t-header-color, #a9afdf);
           height: 48px;
           line-height: 48px;
           padding: 0 25px;
@@ -110,12 +110,12 @@
 
         .menu-content{
           margin: 0 25px;
-          color: #a9afdf;
+          color: var(--t-header-color,#a9afdf);
           height: 60px;
         }
 
         .paper-header-panel{
-          background:#3f51b5;
+          background: var(--t-header-panel-bg, #3f51b5);
           height: 60px;
           line-height: 60px;
         }
@@ -139,7 +139,7 @@
           /* width: 600px; */
           font-size: 12px;
           height: 60px;
-          color: #a9afdf;
+          color: var(--t-header-color,#a9afdf);
           --paper-tabs-selection-bar:{
             border-bottom: 4px solid #fff;
           };
@@ -184,8 +184,8 @@
           }
           paper-drawer-panel {
             --paper-drawer-panel-left-drawer-container: {
-              background: #283593;
-              color: #a9afdf;
+              background: var(--t-header-drawer-bg, #283593);
+              color: var(--t-header-color, #a9afdf);
             };
           }
           #drawer{
@@ -203,11 +203,11 @@
             z-index: 2;
           }
           .drawer-item{
-            border-bottom: solid 1px #a9afdf;
+            border-bottom: solid 1px var(--t-header-color, #a9afdf);
           }
           .iron-selected{
             color: #fff;
-            background:#3f51b5;
+            background: var(--t-header-drawer-selected-bg, #3f51b5);
           }
           .logo{
             margin: 0 20px;
@@ -226,7 +226,7 @@
           --paper-input-container-underline:{
             display: none;
           }
-          --paper-input-container-input-color: #a9afdf;
+          --paper-input-container-input-color: var(--t-header-color, #a9afdf);
           --paper-input-container-input:{
             font-size: 12px;
             line-height: 48px;
