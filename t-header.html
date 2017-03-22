@@ -160,7 +160,6 @@
 
   <script>
 Polymer({
-
   is: 't-header',
 
   properties: {
@@ -179,107 +178,11 @@ Polymer({
     dataOptions: {
       type: Object,
       notify: true,
-      required:true,
-      value: {
-        primaryMenu :{
-          selectedIndex:0,
-          items: [
-          {
-            label : 'Flight',
-            icon : 'maps:flight',
-            eventName : 'activity-option-selected'
-          },
-          {
-            label : 'Hotel',
-            icon : 'maps:hotel',
-            url : 'https://google.com'
-          },
-          {
-            label : 'Car',
-            icon : 'maps:directions-car',
-            eventName : 'activity-option-selected'
-          },
-          {
-            label : 'Activity',
-            icon : 'maps:directions-run',
-            eventName : 'activity-option-selected'
-          },
-          {
-            label : 'Flight',
-            icon : 'maps:flight',
-            url : '/hotel'
-          },
-          {
-            label : 'Hotel',
-            icon : 'maps:hotel',
-            eventName : 'activity-option-selected'
-          },
-          {
-            label : 'Car',
-            icon : 'maps:directions-car',
-            eventName : 'activity-option-selected'
-          },
-          {
-            label : 'Activity',
-            icon : 'maps:directions-run',
-            eventName : 'activity-option-selected'
-          }
-          ]
-        },
-        secondaryMenu :[
-        {
-          label : "Recent Searches",
-          icon : "search",
-          eventName : "Recent search clicked",
-          count: 2
-        }
-        ],
-        shoppingCart:{
-          label : "Trip Cart",
-          icon : "shopping-cart",
-          eventName : "trip-cart-link-clicked",
-          count: 2
-        },
-        topBar : {
-          signUp : {
-            label : 'SignUp',
-            icon : 'icon-url',
-            url:'/register'
-          },
-          signIn : {
-            label : 'SignIn',
-            icon : 'icon-url',
-            url : '/login'
-          },
-          profile :{
-            label : 'Profile',
-            url : '/profile'
-          },
-          mytrips : {
-            label : 'My Trips',
-            url : '/mytrips'
-          },
-          email : "enquiry@travelnxt.com",
-          emailIcon : 'mail',
-          phone : "1800-948-4455",
-          phoneIcon : 'communication:phone'
-        },        
-        countries : [ {icon:"https://lipis.github.io/flag-icon-css/flags/4x3/af.svg", label : "United State(English)", code : "en-us" },{icon:"https://lipis.github.io/flag-icon-css/flags/4x3/in.svg", label : "India(English)", code : "en-us" },{icon:"https://lipis.github.io/flag-icon-css/flags/4x3/in.svg", label : "India(English)", code : "en-us" },{icon:"https://lipis.github.io/flag-icon-css/flags/4x3/fo.svg", label : "Test Case 2(English)", code : "en-us" },{icon:"https://lipis.github.io/flag-icon-css/flags/4x3/cz.svg", label : "Test States 1(English)", code : "en-us" } ],
-        logo : "/travelnxt.png",
-        currencies : [ {value:"Australian Dollar", label:"AUD"}, { value:"Brazilian Real ",label:"BRL" }, { value:"Danish Krone",label:"DKK" }, { value:"Czech Koruna",label:"CZK" }, { value:"Canadian Dollar",label:"CAD" }, { value : "US Doller", label :"USD" }, { value : "US Doller", label :"USD" }],
-        events : {
-          currencyChanged : 'currency-selection-changed',
-          countryChanged : 'currency-selection-changed'
-        }
-      }
+      required:true
     },
     user: {
       type: Object,
-      required: true,
-      value:{
-        name : "John Doe",
-        point : '5000pt'
-      }
+      required: true
     },
     _notDesktop: {
       type: Boolean,
