@@ -21,23 +21,24 @@
   `t-header`
   Header component
 
-  @demo demo/index.html 
+  @demo demo/index.html
 -->
 
 <dom-module id="t-header">
-  <template>
+    <template>
     <style is="custom-style" include="t-header-styles iron-flex iron-flex-alignment "></style>
+
 
     <iron-media-query query="(max-width: 1024px) and (min-width: 700px)" query-matches="{{_isTablet}}"></iron-media-query>
     <iron-media-query query="(min-width : 320px) and (max-width : 480px)" query-matches="{{_isMobile}}"></iron-media-query>
 
     <div class="layout horizontal topbar">
-      <div class="flex layout horizontal topbar-left"> 
+      <div class="flex layout horizontal topbar-left">
         <div class="item"><iron-icon class="icon" icon="[[dataOptions.topBar.phoneIcon]]"></iron-icon>[[dataOptions.topBar.phone]]</div>
         <div hidden$="[[_isMobile]]" class="item"><iron-icon class="icon" icon="[[dataOptions.topBar.emailIcon]]"></iron-icon><a href$="mailto:[[dataOptions.topBar.email]]" >[[dataOptions.topBar.email]]</a></div>
       </div>
 
-      <div class="layout horizontal right-topbar "> 
+      <div class="layout horizontal right-topbar ">
         <template is="dom-repeat" items="[[dataOptions.secondaryMenu]]">
           <div class="right-item layout horizontal" data-event="[[item.eventName]]" on-tap="_secondaryMenuChanged"  >
             <div class="search" hidden$="{{_isMobile}}">
@@ -47,8 +48,9 @@
             <div class="right-text" hidden$="[[_notDesktop]]">[[item.label]]</div>
           </div>
         </template>
-        <div hidden$="[[_isMobile]]">
-          <iron-icon hidden$="[[_notDesktop]]" class="flag" src="[[_selectedFlag]]"></iron-icon>
+        <div class="layout horizontal" hidden$="[[_isMobile]]">
+          <div><iron-icon hidden$="[[_notDesktop]]" class="flag" src="[[_selectedFlag]]"></iron-icon></div>
+          <div>
           <paper-dropdown-menu hidden$="[[_notDesktop]]"  no-label-float class="dropdown" on-iron-select="_countryChanged">
             <paper-listbox  class="dropdown-content" selected="[[_selectedCountry]]">
               <template is="dom-repeat" items="[[dataOptions.countries]]">
@@ -56,6 +58,7 @@
               </template>
             </paper-listbox>
           </paper-dropdown-menu>
+          </div>
 
           <paper-menu-button hidden$="[[!_notDesktop]]" class="dropdown icon-menu" on-iron-select="_countryChanged">
             <paper-icon-button src="[[_selectedFlag]]" class="dropdown-trigger"></paper-icon-button>
@@ -67,6 +70,7 @@
           </paper-menu-button >
           <iron-icon hidden$="[[!_isTablet]]" icon="paper-dropdown-menu:arrow-drop-down" suffix="" class="dropdown style-scope paper-dropdown-menu x-scope iron-icon-0"><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g class="style-scope iron-icon"><path d="M7 10l5 5 5-5z" class="style-scope iron-icon"></path></g></svg> </iron-icon>
 
+          <div>
           <paper-dropdown-menu on-iron-select="_currencyChanged" no-label-float class="dropdown currency-code">
             <paper-listbox selected-attribute="value" class="dropdown-content" selected="[[_selectedCurrency]]">
               <template is="dom-repeat" items="[[dataOptions.currencies]]" selected-item-label="label">
@@ -74,6 +78,7 @@
               </template>
             </paper-listbox>
           </paper-dropdown-menu>
+          </div>
 
         </div>
         <div class="signup-section" >
@@ -213,7 +218,9 @@ Polymer({
 
   _tabChanged: function(e,index){
     const header = this;
-    const selectedTab = this.dataOptions.primaryMenu.items.filter((item,index) => index === header.dataOptions.primaryMenu.selectedIndex);
+    const selectedTab = this.dataOptions.primaryMenu.items.filter(function(item,index){
+      return( index === header.dataOptions.primaryMenu.selectedIndex);
+    });
     if(selectedTab.length> 0){
       if(selectedTab[0].eventName){
         this.fire(selectedTab[0].eventName);
@@ -241,7 +248,6 @@ Polymer({
     this.fire(e.target.getAttribute('data-event'));
     this.$.drawer.closeDrawer();
   },
-
 
   _signupTapped: function(e){
     if(this.dataOptions.topBar.signUp.eventName){
@@ -276,7 +282,6 @@ Polymer({
   _openDrawer: function(e){
     this.$.drawer.openDrawer();
   }
-
 })
   </script>
 </dom-module>
