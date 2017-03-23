@@ -1,10 +1,11 @@
+<link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../paper-header-panel/paper-header-panel.html">
 <link rel="import" href="../paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-tabs/paper-tabs.html">
+<link rel="import" href="../paper-tabs/paper-tab.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-media-query/iron-media-query.html">
-<link rel="import" href="../paper-tabs/paper-tab.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-menu/paper-menu.html">
@@ -25,30 +26,30 @@
 
 <dom-module id="t-header">
   <template>
-    <style is="custom-style" include="iron-flex iron-flex-alignment t-header-styles"></style>
+    <style is="custom-style" include="t-header-styles iron-flex iron-flex-alignment "></style>
 
-    <iron-media-query query="(max-width: 1024px) and (min-width: 700px)" query-matches="{{isTablet}}"></iron-media-query>
-    <iron-media-query query="(min-device-width : 320px) and (max-device-width : 480px)" query-matches="{{isMobile}}"></iron-media-query>
+    <iron-media-query query="(max-width: 1024px) and (min-width: 700px)" query-matches="{{_isTablet}}"></iron-media-query>
+    <iron-media-query query="(min-width : 320px) and (max-width : 480px)" query-matches="{{_isMobile}}"></iron-media-query>
 
     <div class="layout horizontal topbar">
       <div class="flex layout horizontal topbar-left"> 
         <div class="item"><iron-icon class="icon" icon="[[dataOptions.topBar.phoneIcon]]"></iron-icon>[[dataOptions.topBar.phone]]</div>
-        <div hidden$="[[isMobile]]" class="item"><iron-icon class="icon" icon="[[dataOptions.topBar.emailIcon]]"></iron-icon>[[dataOptions.topBar.email]]</div>
+        <div hidden$="[[_isMobile]]" class="item"><iron-icon class="icon" icon="[[dataOptions.topBar.emailIcon]]"></iron-icon><a href$="mailto:[[dataOptions.topBar.email]]" >[[dataOptions.topBar.email]]</a></div>
       </div>
 
       <div class="layout horizontal right-topbar "> 
         <template is="dom-repeat" items="[[dataOptions.secondaryMenu]]">
           <div class="right-item layout horizontal" data-event="[[item.eventName]]" on-tap="_secondaryMenuChanged"  >
-            <div class="search" hidden$="{{isMobile}}">
+            <div class="search" hidden$="{{_isMobile}}">
               <iron-icon class="icon" icon="[[item.icon]]"></iron-icon>
             <div class="notification-count">[[item.count]]</div>
             </div>
             <div class="right-text" hidden$="[[_notDesktop]]">[[item.label]]</div>
           </div>
         </template>
-        <div hidden$="[[isMobile]]">
+        <div hidden$="[[_isMobile]]">
           <iron-icon hidden$="[[_notDesktop]]" class="flag" src="[[_selectedFlag]]"></iron-icon>
-          <paper-dropdown-menu hidden="[[_notDesktop]]"  no-label-float class="dropdown" on-iron-select="_countryChanged">
+          <paper-dropdown-menu hidden$="[[_notDesktop]]"  no-label-float class="dropdown" on-iron-select="_countryChanged">
             <paper-listbox  class="dropdown-content" selected="[[_selectedCountry]]">
               <template is="dom-repeat" items="[[dataOptions.countries]]">
                 <paper-item data-icon$="[[item.icon]]"><iron-icon class="icon" src="[[item.icon]]"></iron-icon>[[item.label]]</paper-item>
@@ -58,14 +59,13 @@
 
           <paper-menu-button hidden$="[[!_notDesktop]]" class="dropdown icon-menu" on-iron-select="_countryChanged">
             <paper-icon-button src="[[_selectedFlag]]" class="dropdown-trigger"></paper-icon-button>
-            <!-- <iron&#45;icon hidden$="[[_notDesktop]]" icon="[[_selectedFlag]]"></iron&#45;icon> -->
             <paper-menu class="dropdown-content">
               <template is="dom-repeat" items="[[dataOptions.countries]]">
                 <paper-item data-icon$="[[item.icon]]"><iron-icon class="icon" src="[[item.icon]]"></iron-icon>[[item.label]]</paper-item>
               </template>
             </paper-menu>
           </paper-menu-button >
-          <iron-icon hidden$="[[!isTablet]]" icon="paper-dropdown-menu:arrow-drop-down" suffix="" class="dropdown style-scope paper-dropdown-menu x-scope iron-icon-0"><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g class="style-scope iron-icon"><path d="M7 10l5 5 5-5z" class="style-scope iron-icon"></path></g></svg> </iron-icon>
+          <iron-icon hidden$="[[!_isTablet]]" icon="paper-dropdown-menu:arrow-drop-down" suffix="" class="dropdown style-scope paper-dropdown-menu x-scope iron-icon-0"><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g class="style-scope iron-icon"><path d="M7 10l5 5 5-5z" class="style-scope iron-icon"></path></g></svg> </iron-icon>
 
           <paper-dropdown-menu on-iron-select="_currencyChanged" no-label-float class="dropdown currency-code">
             <paper-listbox selected-attribute="value" class="dropdown-content" selected="[[_selectedCurrency]]">
@@ -91,12 +91,12 @@
     <paper-header-panel class="flex paper-header-panel">
       <paper-toolbar class="menu-content" >
         <div>
-          <iron-icon class="icon" icon="menu" on-tap="_openDrawer" hidden$="[[!isMobile]]"></iron-icon>
+          <iron-icon class="icon" icon="menu" on-tap="_openDrawer" hidden$="[[!_isMobile]]"></iron-icon>
         <img class="logo" src="[[dataOptions.logo]]" />
         </div>
 
         <div class="flex tabs" >
-          <paper-tabs hidden$="[[isMobile]]" class="flex primary-menu" scrollable selected="{{dataOptions.primaryMenu.selectedIndex}}" on-iron-select="_tabChanged">
+          <paper-tabs hidden$="[[_isMobile]]" class="flex primary-menu" scrollable selected="{{dataOptions.primaryMenu.selectedIndex}}" on-iron-select="_tabChanged">
             <template is="dom-repeat" items="[[dataOptions.primaryMenu.items]]">
               <paper-tab><iron-icon class="icon" icon="[[item.icon]]"></iron-icon>[[item.label]]</paper-tab>
             </template>
@@ -114,7 +114,7 @@
       </paper-toolbar>
     </paper-header-panel>
 
-    <paper-drawer-panel disable-edge-swipe id="drawer" hidden="[[!isMobile]]" drawer>
+    <paper-drawer-panel disable-edge-swipe id="drawer" hidden$="[[!_isMobile]]" drawer>
       <div drawer>
         <iron-selector selected="0">
           <template is="dom-repeat" items="[[dataOptions.primaryMenu.items]]">
@@ -145,7 +145,7 @@
             <paper-menu-button  class="icon-menu" on-iron-select="_countryChanged">
               <paper-icon-button src="[[_selectedFlag]]" class="dropdown-trigger"></paper-icon-button>
               <paper-menu class="dropdown-content">
-                <template is="dom-repeat" items="[[dataOptions.countrys]]">
+                <template is="dom-repeat" items="[[dataOptions.countries]]">
                   <paper-item data-icon$="[[item.icon]]"><iron-icon class="icon" src="[[item.icon]]"></iron-icon>[[item.label]]</paper-item>
                 </template>
               </paper-menu>
@@ -184,9 +184,15 @@ Polymer({
       type: Object,
       required: true
     },
+    _isMobile:{
+      type:Boolean
+    },
+    _isTablet:{
+      type:Boolean
+    },
     _notDesktop: {
       type: Boolean,
-      computed: '_isSmallScreen(isTablet, isMobile)'
+      computed: '_isSmallScreen(_isTablet, _isMobile)'
     }
   },
 
@@ -203,15 +209,6 @@ Polymer({
       this._selectedFlag = selectedItem.getAttribute('data-icon');
       this.fire(this.dataOptions.events.countryChanged);
     }
-  },
-
-  _shoppingCartOpened: function(e, item){
-    this.fire(this.dataOptions.shoppingCart.eventName);
-  },
-
-  _secondaryMenuChanged: function(e, item){
-    this.fire(e.target.getAttribute('data-event'));
-    this.$.drawer.closeDrawer();
   },
 
   _tabChanged: function(e,index){
@@ -235,6 +232,16 @@ Polymer({
   _isSmallScreen: function(isTablet, isMobile){
     return isTablet || isMobile;
   },
+
+  _shoppingCartOpened: function(e){
+    this.fire(this.dataOptions.shoppingCart.eventName);
+  },
+
+  _secondaryMenuChanged: function(e){
+    this.fire(e.target.getAttribute('data-event'));
+    this.$.drawer.closeDrawer();
+  },
+
 
   _signupTapped: function(e){
     if(this.dataOptions.topBar.signUp.eventName){
@@ -270,6 +277,6 @@ Polymer({
     this.$.drawer.openDrawer();
   }
 
-});
+})
   </script>
 </dom-module>
