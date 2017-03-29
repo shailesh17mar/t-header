@@ -43,7 +43,7 @@
           <div class="right-item layout horizontal" data-event="[[item.eventName]]" on-tap="_secondaryMenuChanged"  >
             <div class="search" hidden$="{{_isMobile}}">
               <iron-icon class="icon" icon="[[item.icon]]"></iron-icon>
-            <div class="notification-count">[[item.count]]</div>
+            <div hidden$="[[_hideCount(item.count)]]" class="notification-count">[[item.count]]</div>
             </div>
             <div class="right-text" hidden$="[[_notDesktop]]">[[item.label]]</div>
           </div>
@@ -60,6 +60,7 @@
           </paper-dropdown-menu>
           </div>
 
+          <div>
           <paper-menu-button hidden$="[[!_notDesktop]]" class="dropdown icon-menu" on-iron-select="_countryChanged">
             <paper-icon-button src="[[_selectedFlag]]" class="dropdown-trigger"></paper-icon-button>
             <paper-menu class="dropdown-content">
@@ -69,6 +70,7 @@
             </paper-menu>
           </paper-menu-button >
           <iron-icon hidden$="[[!_isTablet]]" icon="paper-dropdown-menu:arrow-drop-down" suffix="" class="dropdown style-scope paper-dropdown-menu x-scope iron-icon-0"><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g class="style-scope iron-icon"><path d="M7 10l5 5 5-5z" class="style-scope iron-icon"></path></g></svg> </iron-icon>
+          </div>
 
           <div>
           <paper-dropdown-menu on-iron-select="_currencyChanged" no-label-float class="dropdown currency-code">
@@ -120,22 +122,23 @@
     </paper-header-panel>
 
     <paper-drawer-panel disable-edge-swipe id="drawer" hidden$="[[!_isMobile]]" drawer>
-      <div drawer>
+      <div drawer class="drawer">
         <iron-selector selected="0">
           <template is="dom-repeat" items="[[dataOptions.primaryMenu.items]]">
             <paper-item class="drawer-item"><iron-icon class="icon" icon="[[item.icon]]"></iron-icon>[[item.label]]</paper-item>
           </template>
-
         </iron-selector>
 
         <template is="dom-repeat" items="[[dataOptions.secondaryMenu]]">
-          <paper-item class="secondary-item drawer-item" data-event="[[item.eventName]]" on-tap="_secondaryMenuChanged">[[item.label]]</paper-item>
+          <paper-item class="secondary-item drawer-item" data-event="[[item.eventName]]" on-tap="_secondaryMenuChanged">[[item.label]]
+            <div hidden$="[[_hideCount(item.count)]]" class=" drawer-search">[[item.count]]</div>
+          </paper-item>
         </template>
 
         <paper-item class="secondary-item layout horizontal drawer-item">
           <div class="flex">Currency</div>
           <div class="end end-justified">
-            <paper-dropdown-menu on-iron-select="_currencyChanged" no-label-float class="dropdown currency-code">
+            <paper-dropdown-menu dynamic-align on-iron-select="_currencyChanged" no-label-float class="dropdown currency-code">
               <paper-listbox selected-attribute="value" class="dropdown-content" selected="[[_selectedCurrency]]">
                 <template is="dom-repeat" items="[[dataOptions.currencies]]" selected-item-label="label">
                   <paper-item label="[[item.label]]" >[[item.value]]</paper-item>
@@ -147,9 +150,9 @@
         <paper-item class="secondary-item layout horizontal drawer-item">
           <div class="flex">Country</div>
           <div class="end end-justified">
-            <paper-menu-button  class="icon-menu" on-iron-select="_countryChanged">
+            <paper-menu-button dynamic-align  class="icon-menu" on-iron-select="_countryChanged">
               <paper-icon-button src="[[_selectedFlag]]" class="dropdown-trigger"></paper-icon-button>
-              <paper-menu class="dropdown-content">
+              <paper-menu dynamic-align class="dropdown-content">
                 <template is="dom-repeat" items="[[dataOptions.countries]]">
                   <paper-item data-icon$="[[item.icon]]"><iron-icon class="icon" src="[[item.icon]]"></iron-icon>[[item.label]]</paper-item>
                 </template>
@@ -187,7 +190,8 @@ Polymer({
     },
     user: {
       type: Object,
-      required: true
+      required: true,
+      value: null
     },
     _isMobile:{
       type:Boolean
