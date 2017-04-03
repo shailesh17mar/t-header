@@ -14,7 +14,7 @@
 
     <test-fixture id="basic">
       <template>
-        <t-header></t-header>
+        <t-header data="[[data]]" user="[[user]]"></t-header>
       </template>
     </test-fixture>
 
@@ -23,7 +23,7 @@ suite('t-header', function() {
   var element;
   setup(function(){
     element = fixture('basic');
-    element.dataOptions = {
+    element.data = {
       primaryMenu :{
         selectedIndex:0,
         items: [
@@ -71,16 +71,16 @@ suite('t-header', function() {
       },
       secondaryMenu :[
       {
-        label : "Recent Searches",
-        icon : "search",
-        eventName : "Recent search clicked",
-        count: 0
-      }
-      ],
-      shoppingCart:{
         label : "Trip Cart",
         icon : "shopping-cart",
         eventName : "trip-cart-link-clicked",
+        count: 20
+      }
+      ],
+      recentSearch: {
+        label : "Recent Searches",
+        icon : "search",
+        eventName : "Recent search clicked",
         count: 20
       },
       topBar : {
@@ -107,43 +107,101 @@ suite('t-header', function() {
         phone : "1800-948-4455",
         phoneIcon : 'communication:phone'
       },
-      countries : [
-      {icon:"https://lipis.github.io/flag-icon-css/flags/4x3/af.svg", label : "United State(English)", code : "en-us" },
-      {icon:"https://lipis.github.io/flag-icon-css/flags/4x3/in.svg", label : "India(English)", code : "en-us" },
-      {icon:"https://lipis.github.io/flag-icon-css/flags/4x3/in.svg", label : "India(English)", code : "en-us" },
-      {icon:"https://lipis.github.io/flag-icon-css/flags/4x3/fo.svg", label : "Test Case 2(English)", code : "en-us" },
-      {icon:"https://lipis.github.io/flag-icon-css/flags/4x3/cz.svg", label : "Test States 1(English)", code : "en-us" }
+      topStartMenu:[
+      {
+        "title": "1800-958-1000",
+        "icon":  "communication:phone",
+        "url": "tel:18009581000"
+      },
+      {
+        "title": "enquiry@travelnxt.com",
+        "icon": "mail",
+        "url": "mailto:enquiry@travelnxt.com"
+      }
+      ],
+      topEndMenu:[
+      {
+        "code": "ctr-sel",
+        "label": "Country",
+        "isIconMenu": true,
+        "selectedItem": "0",
+        "eventName": "country_changed",
+        "options": [
+        {"icon":"https://lipis.github.io/flag-icon-css/flags/4x3/af.svg", "title" : "United State(English)", "value" : "en-us" },
+        {"icon":"https://lipis.github.io/flag-icon-css/flags/4x3/in.svg", "title" : "India(English)", "value" : "en-in" },
+        {"icon":"https://lipis.github.io/flag-icon-css/flags/4x3/in.svg", "title" : "India(English)", "value" : "en-ts" },
+        {"icon":"https://lipis.github.io/flag-icon-css/flags/4x3/fo.svg", "title" : "Test Case 2(English)", "value" : "en-uk" },
+        {"icon":"https://lipis.github.io/flag-icon-css/flags/4x3/cz.svg", "title" : "Test States 1(English)", "value" : "en-js" }
+        ]
+      },
+      {
+        "code": "currency-sel",
+        "isIconMenu": false,
+        "label": "Currency",
+        "selectedItem": "0",
+        "eventName": "currency_changed",
+        "options": [
+        {title:"Australian Dollar", value:"AUD"},
+        { title:"Brazilian Real ",value:"BRL" },
+        { title:"Danish Krone",value:"DKK" },
+        { title:"Czech Koruna",value:"CZK" },
+        { title:"Canadian Dollar",value:"CAD" },
+        { title : "US Dollar", value :"USD" }
+        ]
+      }
       ],
       logo : "http://www.tavisca.com/wp-content/uploads/travelnxt.png",
-      currencies : [
-      {value:"Australian Dollar", label:"AUD"},
-      { value:"Brazilian Real ",label:"BRL" },
-      { value:"Danish Krone",label:"DKK" },
-      { value:"Czech Koruna",label:"CZK" },
-      { value:"Canadian Dollar",label:"CAD" },
-      { value : "US Doller", label :"USD" },
-      { value : "US Doller", label :"USD" }
-      ],
-      events : {
-        currencyChanged : 'currency-selection-changed',
-        countryChanged : 'currency-selection-changed'
-      }
     };
 
     element.user= {
-      name : "John Doe",
-      point : '5000pt'
-    };
-  });
+      "isLoggedIn": true,
+      "preLogin": {
+      "title": "Sign Up / Sign In",
+      "icon": "account-circle",
+      "code": "signup",
+      "url": "/register"
+      },
+      "postLogin": {
+      "title": "John Doe",
+      "icon": "account-circle",
+      "code": "signedin",
+      "type": "select",
+      "selectedItem": 0,
+      "options": [
+      {
+      "title": "Profile",
+      "url": "/profile",
+      "value": "profile"
+      },
+      {
+      "title": "My Trips",
+      "url": "/trips",
+      "value": "trips"
+      },
+      {
+      "title": "Backoffice",
+      "url": "http://www.gotobackoffice.com",
+      "value": "sso",
+      "openInNewTab": true
+      }]
+      }
+      };
+});
 
-  test('instantiating the element works', function() {
-    assert.equal(element.is, 't-header');
-  });
+test('instantiating the element works', function() {
+  assert.equal(element.is, 't-header');
+});
 
-  test('throw error if dataOptions attribute is null', function(){
-  });
+test('should not display user section if user property is not set', function() {
+  element.user = null;
+  assert.equal(element.querySelector('.signup-section').hidden, true);
+});
+
+test('should not display topStartmenu is it is empty', function() {
+  element.data.topStartMenu = [];
+});
 
 });
-    </script>
+  </script>
   </body>
 </html>

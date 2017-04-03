@@ -94,33 +94,8 @@ t.data = {
 		eventName : "Recent search clicked",
 		count: 20
 	},
-	topBar : {
-		signUp : {
-			label : 'Sign Up',
-			icon : 'icon-url',
-			url:'/register'
-		},
-		signIn : {
-			label : 'Sign In',
-			icon : 'icon-url',
-			url : '/login'
-		},
-		profile :{
-			label : 'Profile',
-			url : '/profile'
-		},
-		mytrips : {
-			label : 'My Trips',
-			url : '/mytrips'
-		},
-		email : "enquiry@travelnxt.com",
-		emailIcon : 'mail',
-		phone : "1800-948-4455",
-		phoneIcon : 'communication:phone'
-	},
 	topStartMenu:[
 	{
-
 		"title": "1800-958-1000",
 		"icon":  "communication:phone",
 		"url": "tel:18009581000"
@@ -178,27 +153,12 @@ t.user= {
 		"icon": "account-circle",
 		"code": "signedin",
 		"type": "select",
-		"selectedItem": 0,
-		"options": [
-		{
-			"title": "Profile",
-			"url": "/profile",
-			"value": "profile"
-		},
-		{
-			"title": "My Trips",
-			"url": "/trips",
-			"value": "trips"
-		},
-		{
-			"title": "Backoffice",
-			"url": "http://www.gotobackoffice.com",
-			"value": "sso",
-			"openInNewTab": true
-		}
-		]
+		"selectedItem": 0
 	}
 };
+t.addEventListener('t-header-primary-selected', function(e){
+console.log(e);
+});
 		</script>
 	</body>
 </html>
