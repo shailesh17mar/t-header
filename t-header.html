@@ -1,4 +1,4 @@
-<link rel="import" href="../polymer/polymer.html">
+<!-- <link rel="import" href="../polymer/polymer.html"> -->
 <link rel="import" href="../paper-header-panel/paper-header-panel.html">
 <link rel="import" href="../paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../paper-button/paper-button.html">
@@ -9,6 +9,7 @@
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-menu/paper-menu.html">
+<link rel="import" href="../paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../paper-item/paper-icon-item.html">
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../paper-drawer-panel/paper-drawer-panel.html">
@@ -18,155 +19,259 @@
 <link rel="import" href="./t-header-styles.html">
 
 <!--
-  `t-header`
-  Header component
+	`t-header`
+	Header component
 
-  @demo demo/index.html
+	@demo demo/index.html
 -->
 
 <dom-module id="t-header">
-    <template>
-    <style is="custom-style" include="t-header-styles iron-flex iron-flex-alignment "></style>
+	<template>
+		<style is="custom-style" include="t-header-styles iron-flex iron-flex-alignment "></style>
 
+		<iron-media-query query="(max-width: 1024px) and (min-width: 700px)" query-matches="{{_isTablet}}"></iron-media-query>
+		<iron-media-query query="(min-width : 320px) and (max-width : 480px)" query-matches="{{_isMobile}}"></iron-media-query>
 
-    <iron-media-query query="(max-width: 1024px) and (min-width: 700px)" query-matches="{{_isTablet}}"></iron-media-query>
-    <iron-media-query query="(min-width : 320px) and (max-width : 480px)" query-matches="{{_isMobile}}"></iron-media-query>
-
-    <div class="layout horizontal topbar">
-      <div class="flex layout horizontal topbar-left">
-        <div class="item"><iron-icon class="icon" icon="[[dataOptions.topBar.phoneIcon]]"></iron-icon>[[dataOptions.topBar.phone]]</div>
-        <div hidden$="[[_isMobile]]" class="item"><iron-icon class="icon" icon="[[dataOptions.topBar.emailIcon]]"></iron-icon><a href$="mailto:[[dataOptions.topBar.email]]" >[[dataOptions.topBar.email]]</a></div>
-      </div>
-
-      <div class="layout horizontal right-topbar ">
-        <template is="dom-repeat" items="[[dataOptions.secondaryMenu]]">
-          <div class="right-item layout horizontal" data-event="[[item.eventName]]" on-tap="_secondaryMenuChanged"  >
-            <div class="search" hidden$="{{_isMobile}}">
-              <iron-icon class="icon" icon="[[item.icon]]"></iron-icon>
-            <div hidden$="[[_hideCount(item.count)]]" class="notification-count">[[item.count]]</div>
-            </div>
-            <div class="right-text" hidden$="[[_notDesktop]]">[[item.label]]</div>
+		<div class="layout horizontal topbar">
+			<div class="flex layout horizontal topbar-left">
+				<template is="dom-repeat" items="[[_getTopStartMenu(_isMobile,data.topStartMenu)]]">
+					<div class="item">
+            <iron-icon class="icon" icon="[[item.icon]]"></iron-icon>
+            <a href$="[[item.url]]" >[[item.title]]</a>
           </div>
-        </template>
-        <div class="layout horizontal" hidden$="[[_isMobile]]">
-          <div><iron-icon hidden$="[[_notDesktop]]" class="flag" src="[[_selectedFlag]]"></iron-icon></div>
-          <div>
-          <paper-dropdown-menu hidden$="[[_notDesktop]]"  no-label-float class="dropdown" on-iron-select="_countryChanged">
-            <paper-listbox  class="dropdown-content" selected="[[_selectedCountry]]">
-              <template is="dom-repeat" items="[[dataOptions.countries]]">
-                <paper-item data-icon$="[[item.icon]]"><iron-icon class="icon" src="[[item.icon]]"></iron-icon>[[item.label]]</paper-item>
-              </template>
-            </paper-listbox>
-          </paper-dropdown-menu>
-          </div>
+				</template>
+			</div>
 
-          <div>
-          <paper-menu-button hidden$="[[!_notDesktop]]" class="dropdown icon-menu" on-iron-select="_countryChanged">
-            <paper-icon-button src="[[_selectedFlag]]" class="dropdown-trigger"></paper-icon-button>
-            <paper-menu class="dropdown-content">
-              <template is="dom-repeat" items="[[dataOptions.countries]]">
-                <paper-item data-icon$="[[item.icon]]"><iron-icon class="icon" src="[[item.icon]]"></iron-icon>[[item.label]]</paper-item>
-              </template>
-            </paper-menu>
-          </paper-menu-button >
-          <iron-icon hidden$="[[!_isTablet]]" icon="paper-dropdown-menu:arrow-drop-down" suffix="" class="dropdown style-scope paper-dropdown-menu x-scope iron-icon-0"><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g class="style-scope iron-icon"><path d="M7 10l5 5 5-5z" class="style-scope iron-icon"></path></g></svg> </iron-icon>
-          </div>
+			<div class="layout horizontal right-topbar ">
+				<div class="right-item layout horizontal" data-event="[[data.recentSearch.eventName]]" on-tap="_recentSearchTapped"  >
+					<div class="search" hidden$="{{_isMobile}}">
+						<iron-icon class="icon" icon="[[data.recentSearch.icon]]"></iron-icon>
+					<div hidden$="[[_hideCount(data.recentSearch.count)]]" class="notification-count">[[data.recentSearch.count]]</div>
+					</div>
+					<div class="right-text" hidden$="[[_notDesktop]]">[[data.recentSearch.label]]</div>
+				</div>
+				<!-- <template is="dom&#45;repeat" items="[[data.secondaryMenu]]"> -->
+				<!--   <div class="right&#45;item layout horizontal" data&#45;event="[[item.eventName]]" on&#45;tap="_secondaryMenuChanged"  > -->
+				<!--     <div class="search" hidden$="{{_isMobile}}"> -->
+				<!--       <iron&#45;icon class="icon" icon="[[item.icon]]"></iron&#45;icon> -->
+				<!--     <div hidden$="[[_hideCount(item.count)]]" class="notification&#45;count">[[item.count]]</div> -->
+				<!--     </div> -->
+				<!--     <div class="right&#45;text" hidden$="[[_notDesktop]]">[[item.label]]</div> -->
+				<!--   </div> -->
+				<!-- </template> -->
+				<div class="layout horizontal" hidden$="[[_isMobile]]">
+					<template is="dom-repeat" items="[[data.topEndMenu]]">
+						<div hidden$="[[!item.isIconMenu]]">
+							<iron-icon hidden$="[[_notDesktop]]" class="flag" src="[[_selectedFlag]]"></iron-icon></div>
+						<div>
+							<paper-dropdown-menu hidden$="[[_hideIfResponsiveScreenAndIconMenu(_notDesktop, item.isIconMenu)]]" no-label-float class$="[[_getDropdownClasses(item.isIconMenu)]]" on-iron-select="_topEndMenuChanged" >
+								<paper-listbox  class="dropdown-content"  selected="{{ item.selectedItem }}">
+									<template is="dom-repeat" items="[[item.options]]" as="option">
+										<template is="dom-if" if="[[item.isIconMenu]]">
+											<paper-item data-icon$="[[option.icon]]" data-value$="[[option.value]]">
+												<iron-icon hidden$="[[!item.isIconMenu]]" class="icon" src="[[option.icon]]"></iron-icon>
+								[[option.title]]
+											</paper-item>
+										</template>
+										<template is="dom-if" if="[[!item.isIconMenu]]">
+											<paper-item  label="[[option.value]]">
+												[[_getDropdownLabel(option.value, option.title)]]
+											</paper-item>
+										</template>
+									</template>
+								</paper-listbox>
+							</paper-dropdown-menu>
+						</div>
 
-          <div>
-          <paper-dropdown-menu on-iron-select="_currencyChanged" no-label-float class="dropdown currency-code">
-            <paper-listbox selected-attribute="value" class="dropdown-content" selected="[[_selectedCurrency]]">
-              <template is="dom-repeat" items="[[dataOptions.currencies]]" selected-item-label="label">
-                <paper-item label="[[item.label]]" >[[item.value]]</paper-item>
-              </template>
-            </paper-listbox>
-          </paper-dropdown-menu>
-          </div>
+						<!-- </template> -->
+						<!-- <div> -->
+						<!-- 	<paper&#45;dropdown&#45;menu hidden$="[[_notDesktop]]"  no&#45;label&#45;float class="dropdown" on&#45;iron&#45;select="_countryChanged"> -->
+						<!-- 		<paper&#45;listbox  class="dropdown&#45;content" selected="[[_selectedCountry]]"> -->
+						<!-- 			<template is="dom&#45;repeat" items="[[data.countries]]"> -->
+						<!-- 				<paper&#45;item data&#45;icon$="[[item.icon]]"><iron&#45;icon class="icon" src="[[item.icon]]"></iron&#45;icon>[[item.label]]</paper&#45;item> -->
+						<!-- 			</template> -->
+						<!-- 		</paper&#45;listbox> -->
+						<!-- 	</paper&#45;dropdown&#45;menu> -->
+						<!-- </div> -->
 
-        </div>
-        <div class="signup-section" >
-          <iron-icon icon="account-circle"></iron-icon>
-          <template is="dom-if" if="[[!user]]">
-            <paper-button class="action-button" on-tap="_signupTapped">[[dataOptions.topBar.signIn.label]]</paper-button>/<paper-button class="action-button" on-tap="_signinTapped" >[[dataOptions.topBar.signIn.label]]</paper-button>
-          </template>
-          <template is="dom-if" if="[[user]]">
-            <paper-button class="action-button" on-tap="_userProfileTapped">[[user.name]]</paper-button>
-          </template>
-        </div>
+						<div hidden$="[[!item.isIconMenu]]">
+							<paper-menu-button dynamic-align  hidden$="[[!_notDesktop]]" class="dropdown icon-menu" on-iron-select="_countryChanged">
+								<paper-icon-button src="[[_selectedFlag]]" class="dropdown-trigger"></paper-icon-button>
+								<paper-menu class="dropdown-content">
+									<template is="dom-repeat" items="[[item.options]]">
+										<paper-item data-icon$="[[item.icon]]"><iron-icon class="icon" src="[[item.icon]]"></iron-icon>[[item.title]]</paper-item>
+									</template>
+								</paper-menu>
+							</paper-menu-button >
+							<iron-icon hidden$="[[!_isTablet]]" icon="paper-dropdown-menu:arrow-drop-down" suffix="" class="dropdown style-scope paper-dropdown-menu x-scope iron-icon-0"><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g class="style-scope iron-icon"><path d="M7 10l5 5 5-5z" class="style-scope iron-icon"></path></g></svg> </iron-icon>
+						</div>
+	</template>
+	<!-- <div> -->
+	<!-- 	<paper&#45;dropdown&#45;menu on&#45;iron&#45;select="_currencyChanged" no&#45;label&#45;float class="dropdown currency&#45;code"> -->
+	<!-- 		<paper&#45;listbox selected&#45;attribute="value" class="dropdown&#45;content" selected="[[_selectedCurrency]]"> -->
+	<!-- 			<template is="dom&#45;repeat" items="[[data.currencies]]" selected&#45;item&#45;label="label"> -->
+	<!-- 				<paper&#45;item label="[[item.label]]" >[[item.value]]</paper&#45;item> -->
+	<!-- 			</template> -->
+	<!-- 		</paper&#45;listbox> -->
+	<!-- 	</paper&#45;dropdown&#45;menu> -->
+	<!-- </div> -->
+				</div>
+				<div class="signup-section" >
+					<div hidden$="[[!user.isLoggedIn]]">
+						<div hidden$="[[!_hasUrlTrigger(user.postLogin)]]">
+							<paper-button icon="[[user.postLogin.icon]]" class="action-button" on-tap="_userSectionTapped">
+								<iron-icon icon="[[user.postLogin.icon]]"></iron-icon>
+					[[user.postLogin.title]]
+							</paper-button>
+						</div>
+						<div hidden$="[[_hasUrlTrigger(user.postLogin)]]">
+							<paper-menu-button dynamic-align >
+								<paper-button icon="[[user.preLogin.icon]]" class="dropdown-trigger action-button" >
+									<iron-icon icon="[[user.preLogin.icon]]"></iron-icon>
+								[[user.postLogin.title]]
+								</paper-button>
+               <div class="dropdown-content user-section-content">
+								<content select=".prelogin-content" ></content>
+               </div>
+							</paper-menu-button>
+						</div>
+					</div>
+					<div hidden$="[[user.isLoggedIn]]">
+						<div hidden$="[[!_hasUrlTrigger(user.preLogin)]]">
+							<paper-button icon="[[user.preLogin.icon]]" class="action-button" on-tap="_userSectionTapped">
+								<iron-icon icon="[[user.preLogin.icon]]"></iron-icon>
+								[[user.preLogin.title]]
+							</paper-button>
+						</div>
+						<div hidden$="[[_hasUrlTrigger(user.preLogin)]]">
+							<paper-menu-button >
+								<paper-button icon="[[user.preLogin.icon]]" class="dropdown-trigger action-button" >
+									<iron-icon icon="[[user.preLogin.icon]]"></iron-icon>
+								[[user.preLogin.title]]
+								</paper-button>
+								<content select=".prelogin-content" class="dropdown-content" ></content>
+							</paper-menu-button>
+						</div>
+					</div>
+				</div>
 
-      </div>
-    </div>
-    <paper-header-panel class="flex paper-header-panel">
-      <paper-toolbar class="menu-content" >
-        <div>
-          <iron-icon class="icon" icon="menu" on-tap="_openDrawer" hidden$="[[!_isMobile]]"></iron-icon>
-        <img class="logo" src="[[dataOptions.logo]]" />
-        </div>
+			</div>
+		</div>
+		<paper-header-panel class="flex paper-header-panel">
+			<paper-toolbar class="menu-content" >
+				<div>
+					<iron-icon class="icon" icon="menu" on-tap="_openDrawer" hidden$="[[!_isMobile]]"></iron-icon>
+				<img class="logo" src="[[data.logo]]" />
+				</div>
 
-        <div class="flex tabs" >
-          <paper-tabs hidden$="[[_isMobile]]" class="flex primary-menu" scrollable selected="{{dataOptions.primaryMenu.selectedIndex}}" on-iron-select="_tabChanged">
-            <template is="dom-repeat" items="[[dataOptions.primaryMenu.items]]">
-              <paper-tab><iron-icon class="icon" icon="[[item.icon]]"></iron-icon>[[item.label]]</paper-tab>
-            </template>
-          </paper-tabs>
-        </div>
-        <div class="flex-2 end-justified horizontal layout secondary-menu">
-          <div class="secondary-menu horizontal layout" on-tap="_shoppingCartOpened">
-            <div>
-              <iron-icon class="icon" icon="[[dataOptions.shoppingCart.icon]]"></iron-icon>
-              <div hidden$="[[_hideCount(item.count)]]" class="notification-count">[[dataOptions.shoppingCart.count]]</div>
-            </div>
-            <div class="right-text" hidden$="[[_notDesktop]]">[[dataOptions.shoppingCart.label]]</div>
-          </div>
-        </div>
-      </paper-toolbar>
-    </paper-header-panel>
+				<div class="flex tabs" >
+					<paper-tabs hidden$="[[_isMobile]]" class="flex primary-menu" scrollable selected="{{data.primaryMenu.selectedIndex}}" on-iron-select="_tabChanged">
+						<template is="dom-repeat" items="[[data.primaryMenu.items]]">
+							<paper-tab><iron-icon class="icon" icon="[[item.icon]]"></iron-icon>[[item.label]]</paper-tab>
+						</template>
+					</paper-tabs>
+				</div>
+				<div class="flex-2 end-justified horizontal layout secondary-menu">
+					<template is="dom-repeat" items="[[data.secondaryMenu]]">
+						<div class="secondary-menu horizontal layout" data-event="[[item.eventName]]" on-tap="_secondaryMenuChanged"  >
+							<div >
+								<iron-icon class="icon" icon="[[item.icon]]"></iron-icon>
+							<div hidden$="[[_hideCount(item.count)]]" class="notification-count">[[item.count]]</div>
+							</div>
+							<div class="right-text" hidden$="[[_notDesktop]]">[[item.label]]</div>
+						</div>
+					</template>
+					<!-- <div class="secondary&#45;menu horizontal layout" on&#45;tap="_recentSearchTapped"> -->
+					<!--   <div> -->
+					<!--     <iron&#45;icon class="icon" icon="[[data.shoppingCart.icon]]"></iron&#45;icon> -->
+					<!--     <div hidden$="[[_hideCount(item.count)]]" class="notification&#45;count">[[data.shoppingCart.count]]</div> -->
+					<!--   </div> -->
+					<!--   <div class="right&#45;text" hidden$="[[_notDesktop]]">[[data.shoppingCart.label]]</div> -->
+					<!-- </div> -->
+				</div>
+			</paper-toolbar>
+		</paper-header-panel>
 
-    <paper-drawer-panel disable-edge-swipe id="drawer" hidden$="[[!_isMobile]]" drawer>
-      <div drawer class="drawer">
-        <iron-selector selected="0">
-          <template is="dom-repeat" items="[[dataOptions.primaryMenu.items]]">
-            <paper-item class="drawer-item"><iron-icon class="icon" icon="[[item.icon]]"></iron-icon>[[item.label]]</paper-item>
-          </template>
+		<paper-drawer-panel disable-edge-swipe id="drawer" hidden$="[[!_isMobile]]" drawer>
+			<div drawer class="drawer">
+				<iron-selector selected="0">
+					<template is="dom-repeat" items="[[data.primaryMenu.items]]">
+						<paper-item class="drawer-item"><iron-icon class="icon" icon="[[item.icon]]"></iron-icon>[[item.label]]</paper-item>
+					</template>
         </iron-selector>
 
-        <template is="dom-repeat" items="[[dataOptions.secondaryMenu]]">
-          <paper-item class="secondary-item drawer-item" data-event="[[item.eventName]]" on-tap="_secondaryMenuChanged">[[item.label]]
-            <div hidden$="[[_hideCount(item.count)]]" class=" drawer-search">[[item.count]]</div>
+        <paper-item class="secondary-item drawer-item" data-event="[[data.recentSearch.eventName]]" on-tap="_secondaryMenuChanged">[[data.recentSearch.label]]
+          <div hidden$="[[_hideCount(data.recentSearch.count)]]" class=" drawer-search">[[data.recentSearch.count]]</div>
+        </paper-item>
+
+        <!-- <template is="dom&#45;repeat" items="[[data.secondaryMenu]]"> -->
+        <!--   <paper&#45;item class="secondary&#45;item drawer&#45;item" data&#45;event="[[item.eventName]]" on&#45;tap="_secondaryMenuChanged">[[item.label]] -->
+        <!--     <div hidden$="[[_hideCount(item.count)]]" class=" drawer&#45;search">[[item.count]]</div> -->
+        <!--   </paper&#45;item> -->
+        <!-- </template> -->
+
+        <template is="dom-repeat" items="[[data.topEndMenu]]">
+          <paper-item class="secondary-item layout horizontal drawer-item">
+            <div class="flex">[[item.label]]</div>
+            <div class="end end-justified">
+              <template is="dom-if" if="[[!item.isIconMenu]]">
+                <paper-dropdown-menu dynamic-align on-iron-select="_topEndMenuChanged" no-label-float class$="[[ _getDropdownClasses(item.isIconMenu)]]">
+                  <paper-listbox class="dropdown-content" selected="{{ item.selectedItem }}">
+                    <template is="dom-repeat" items="[[item.options]]" as="option" selected-item-label="label">
+                      <paper-item label="[[option.value]]" data-value$="[[option.value]]" >[[_getDropdownLabel(option.value, option.title)]]
+                      </paper-item>
+                    </template>
+                  </paper-listbox>
+                </paper-dropdown-menu>
+              </template>
+            </div>
+            <template is="dom-if" if="[[item.isIconMenu]]">
+              <paper-menu-button dynamic-align  class="icon-menu" on-iron-select="_topEndMenuChanged">
+                <paper-icon-button src="[[_selectedFlag]]" class="dropdown-trigger"></paper-icon-button>
+                <paper-menu dynamic-align class="dropdown-content">
+                  <template is="dom-repeat" items="[[item.options]]" as="option">
+                    <paper-item data-icon$="[[option.icon]]"><iron-icon class="icon" src="[[option.icon]]"></iron-icon>[[option.title]]</paper-item>
+                  </template>
+                </paper-menu>
+              </paper-menu-button >
+              <iron-icon icon="paper-dropdown-menu:arrow-drop-down" suffix="" class="style-scope paper-dropdown-menu x-scope iron-icon-0"><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g class="style-scope iron-icon"><path d="M7 10l5 5 5-5z" class="style-scope iron-icon"></path></g></svg> </iron-icon>
+            </template>
           </paper-item>
         </template>
 
-        <paper-item class="secondary-item layout horizontal drawer-item">
-          <div class="flex">Currency</div>
-          <div class="end end-justified">
-            <paper-dropdown-menu dynamic-align on-iron-select="_currencyChanged" no-label-float class="dropdown currency-code">
-              <paper-listbox selected-attribute="value" class="dropdown-content" selected="[[_selectedCurrency]]">
-                <template is="dom-repeat" items="[[dataOptions.currencies]]" selected-item-label="label">
-                  <paper-item label="[[item.label]]" >[[item.value]]</paper-item>
-                </template>
-              </paper-listbox>
-            </paper-dropdown-menu>
-          </div>
-        </paper-item>
-        <paper-item class="secondary-item layout horizontal drawer-item">
-          <div class="flex">Country</div>
-          <div class="end end-justified">
-            <paper-menu-button dynamic-align  class="icon-menu" on-iron-select="_countryChanged">
-              <paper-icon-button src="[[_selectedFlag]]" class="dropdown-trigger"></paper-icon-button>
-              <paper-menu dynamic-align class="dropdown-content">
-                <template is="dom-repeat" items="[[dataOptions.countries]]">
-                  <paper-item data-icon$="[[item.icon]]"><iron-icon class="icon" src="[[item.icon]]"></iron-icon>[[item.label]]</paper-item>
-                </template>
-              </paper-menu>
-            </paper-menu-button >
-            <iron-icon icon="paper-dropdown-menu:arrow-drop-down" suffix="" class="style-scope paper-dropdown-menu x-scope iron-icon-0"><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" class="style-scope iron-icon" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g class="style-scope iron-icon"><path d="M7 10l5 5 5-5z" class="style-scope iron-icon"></path></g></svg> </iron-icon>
-          </div>
-        </paper-item>
+
+        <!-- <paper&#45;item class="secondary&#45;item layout horizontal drawer&#45;item"> -->
+        <!--   <div class="flex">Currency</div> -->
+        <!--   <div class="end end&#45;justified"> -->
+        <!--     <paper&#45;dropdown&#45;menu dynamic&#45;align on&#45;iron&#45;select="_currencyChanged" no&#45;label&#45;float class="dropdown currency&#45;code"> -->
+        <!--       <paper&#45;listbox selected&#45;attribute="value" class="dropdown&#45;content" selected="[[_selectedCurrency]]"> -->
+        <!--         <template is="dom&#45;repeat" items="[[data.currencies]]" selected&#45;item&#45;label="label"> -->
+        <!--           <paper&#45;item label="[[item.label]]" >[[item.value]]</paper&#45;item> -->
+        <!--         </template> -->
+        <!--       </paper&#45;listbox> -->
+        <!--     </paper&#45;dropdown&#45;menu> -->
+        <!--   </div> -->
+        <!-- </paper&#45;item> -->
+        <!-- <paper&#45;item class="secondary&#45;item layout horizontal drawer&#45;item"> -->
+        <!--   <div class="flex">Country</div> -->
+        <!--   <div class="end end&#45;justified"> -->
+        <!--     <paper&#45;menu&#45;button dynamic&#45;align  class="icon&#45;menu" on&#45;iron&#45;select="_countryChanged"> -->
+        <!--       <paper&#45;icon&#45;button src="[[_selectedFlag]]" class="dropdown&#45;trigger"></paper&#45;icon&#45;button> -->
+        <!--       <paper&#45;menu dynamic&#45;align class="dropdown&#45;content"> -->
+        <!--         <template is="dom&#45;repeat" items="[[data.countries]]"> -->
+        <!--           <paper&#45;item data&#45;icon$="[[item.icon]]"><iron&#45;icon class="icon" src="[[item.icon]]"></iron&#45;icon>[[item.label]]</paper&#45;item> -->
+        <!--         </template> -->
+        <!--       </paper&#45;menu> -->
+        <!--     </paper&#45;menu&#45;button > -->
+        <!--     <iron&#45;icon icon="paper&#45;dropdown&#45;menu:arrow&#45;drop&#45;down" suffix="" class="style&#45;scope paper&#45;dropdown&#45;menu x&#45;scope iron&#45;icon&#45;0"><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" class="style&#45;scope iron&#45;icon" style="pointer&#45;events: none; display: block; width: 100%; height: 100%;"><g class="style&#45;scope iron&#45;icon"><path d="M7 10l5 5 5&#45;5z" class="style&#45;scope iron&#45;icon"></path></g></svg> </iron&#45;icon> -->
+        <!--   </div> -->
+        <!-- </paper&#45;item> -->
       </div>
     </paper-drawer-panel>
 
-  </template>
+    </template>
 
-  <script>
+    <script>
 Polymer({
   is: 't-header',
 
@@ -183,14 +288,13 @@ Polymer({
       type: Number,
       value: 0
     },
-    dataOptions: {
+    data: {
       type: Object,
       notify: true,
       required:true
     },
     user: {
       type: Object,
-      required: true,
       value: null
     },
     _isMobile:{
@@ -208,22 +312,31 @@ Polymer({
   _currencyChanged: function(e){
     let selectedItem = e.target.selectedItem;
     if(selectedItem){
-      this.fire(this.dataOptions.events.currencyChanged);
+      this.fire(this.data.events.currencyChanged);
     }
   },
 
-  _countryChanged: function(e){
-    let selectedItem = e.target.selectedItem;
+  _topEndMenuChanged: function(e){
+    var selectedDropdown =  e.model.item;
+    var selectedPaperItem =  e.detail.item;
+    var selectedItem = null;
+    selectedDropdown.options.forEach(function(item){
+      if(item.value === selectedPaperItem.getAttribute('data-value')){
+        selectedItem = item;
+        return;
+      }
+    });
     if(selectedItem){
-      this._selectedFlag = selectedItem.getAttribute('data-icon');
-      this.fire(this.dataOptions.events.countryChanged);
+      if(selectedDropdown.isIconMenu)
+        this._selectedFlag = selectedItem.icon;
+      this.fire(selectedDropdown.eventName);
     }
   },
 
   _tabChanged: function(e,index){
     const header = this;
-    const selectedTab = this.dataOptions.primaryMenu.items.filter(function(item,index){
-      return( index === header.dataOptions.primaryMenu.selectedIndex);
+    const selectedTab = this.data.primaryMenu.items.filter(function(item,index){
+      return( index === header.data.primaryMenu.selectedIndex);
     });
     if(selectedTab.length> 0){
       if(selectedTab[0].eventName){
@@ -244,8 +357,8 @@ Polymer({
     return isTablet || isMobile;
   },
 
-  _shoppingCartOpened: function(e){
-    this.fire(this.dataOptions.shoppingCart.eventName);
+  _recentSearchTapped: function(e){
+    this.fire(this.data.recentSearch.eventName);
   },
 
   _secondaryMenuChanged: function(e){
@@ -254,38 +367,55 @@ Polymer({
   },
 
   _signupTapped: function(e){
-    if(this.dataOptions.topBar.signUp.eventName){
-      this.fire(this.dataOptions.topBar.signUp.eventName);
+    if(this.data.topBar.signUp.eventName){
+      this.fire(this.data.topBar.signUp.eventName);
     }
-    else if(this.dataOptions.topBar.signUp.url) {
-      window.location = this.dataOptions.topBar.signUp.url;
-      e.stopPropagation();
-    }
-  },
-
-  _signinTapped: function(e){
-    if(this.dataOptions.topBar.signIn.eventName){
-      this.fire(this.dataOptions.topBar.signIn.eventName);
-    }
-    else if(this.dataOptions.topBar.signIn.url) {
-      window.location = this.dataOptions.topBar.signIn.url;
-      e.stopPropagation();
-    }
-  },
-
-  _userProfileTapped: function(e){
-    if(this.user.eventName){
-      this.fire(this.user.eventName);
-    }
-    else if(this.user.url) {
-      window.location = this.user.url;
+    else if(this.data.topBar.signUp.url) {
+      window.location = this.data.topBar.signUp.url;
       e.stopPropagation();
     }
   },
 
   _openDrawer: function(e){
     this.$.drawer.openDrawer();
+  },
+
+  _isNotIconMenu: function(item){
+    return !item.isIconMenu;
+  },
+
+  _getDropdownLabel: function(title, value){
+    return title + ' ' + value;
+  },
+
+  _userSectionTapped: function(e){
+    if(this.user.isLoggedIn){
+      if(this.postLogin.url)
+        window.location = this.postLogin.url;
+    }
+  },
+
+  _hasUrlTrigger: function(item){
+    return (item.url !== undefined && item !== null && item.length > 0);
+  },
+
+  _getDropdownClasses: function(isIconMenu){
+    if(isIconMenu)
+      return "dropdown";
+    return "small dropdown" ;
+  },
+
+  _hideIfResponsiveScreenAndIconMenu: function(notDesktop, isIconMenu){
+    return notDesktop && isIconMenu;
+  },
+  _getTopStartMenu: function(isMobile, items){
+    if(isMobile){
+      var array=[];
+      array.push(items[0]);
+      return array;
+    }
+    return items;
   }
 })
-  </script>
+    </script>
 </dom-module>

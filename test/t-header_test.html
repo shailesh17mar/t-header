@@ -19,14 +19,131 @@
     </test-fixture>
 
     <script>
-      suite('t-header', function() {
+suite('t-header', function() {
+  var element;
+  setup(function(){
+    element = fixture('basic');
+    element.dataOptions = {
+      primaryMenu :{
+        selectedIndex:0,
+        items: [
+        {
+          label : 'Flight',
+          icon : 'maps:flight',
+          eventName : 'activity-option-selected'
+        },
+        {
+          label : 'Hotel',
+          icon : 'maps:hotel',
+          url : 'https://google.com'
+        },
+        {
+          label : 'Car',
+          icon : 'maps:directions-car',
+          eventName : 'activity-option-selected'
+        },
+        {
+          label : 'Activity',
+          icon : 'maps:directions-run',
+          eventName : 'activity-option-selected'
+        },
+        {
+          label : 'Flight',
+          icon : 'maps:flight',
+          url : '/hotel'
+        },
+        {
+          label : 'Hotel',
+          icon : 'maps:hotel',
+          eventName : 'activity-option-selected'
+        },
+        {
+          label : 'Car',
+          icon : 'maps:directions-car',
+          eventName : 'activity-option-selected'
+        },
+        {
+          label : 'Activity',
+          icon : 'maps:directions-run',
+          eventName : 'activity-option-selected'
+        }
+        ]
+      },
+      secondaryMenu :[
+      {
+        label : "Recent Searches",
+        icon : "search",
+        eventName : "Recent search clicked",
+        count: 0
+      }
+      ],
+      shoppingCart:{
+        label : "Trip Cart",
+        icon : "shopping-cart",
+        eventName : "trip-cart-link-clicked",
+        count: 20
+      },
+      topBar : {
+        signUp : {
+          label : 'Sign Up',
+          icon : 'icon-url',
+          url:'/register'
+        },
+        signIn : {
+          label : 'Sign In',
+          icon : 'icon-url',
+          url : '/login'
+        },
+        profile :{
+          label : 'Profile',
+          url : '/profile'
+        },
+        mytrips : {
+          label : 'My Trips',
+          url : '/mytrips'
+        },
+        email : "enquiry@travelnxt.com",
+        emailIcon : 'mail',
+        phone : "1800-948-4455",
+        phoneIcon : 'communication:phone'
+      },
+      countries : [
+      {icon:"https://lipis.github.io/flag-icon-css/flags/4x3/af.svg", label : "United State(English)", code : "en-us" },
+      {icon:"https://lipis.github.io/flag-icon-css/flags/4x3/in.svg", label : "India(English)", code : "en-us" },
+      {icon:"https://lipis.github.io/flag-icon-css/flags/4x3/in.svg", label : "India(English)", code : "en-us" },
+      {icon:"https://lipis.github.io/flag-icon-css/flags/4x3/fo.svg", label : "Test Case 2(English)", code : "en-us" },
+      {icon:"https://lipis.github.io/flag-icon-css/flags/4x3/cz.svg", label : "Test States 1(English)", code : "en-us" }
+      ],
+      logo : "http://www.tavisca.com/wp-content/uploads/travelnxt.png",
+      currencies : [
+      {value:"Australian Dollar", label:"AUD"},
+      { value:"Brazilian Real ",label:"BRL" },
+      { value:"Danish Krone",label:"DKK" },
+      { value:"Czech Koruna",label:"CZK" },
+      { value:"Canadian Dollar",label:"CAD" },
+      { value : "US Doller", label :"USD" },
+      { value : "US Doller", label :"USD" }
+      ],
+      events : {
+        currencyChanged : 'currency-selection-changed',
+        countryChanged : 'currency-selection-changed'
+      }
+    };
 
-        test('instantiating the element works', function() {
-          var element = fixture('basic');
-          assert.equal(element.is, 't-header');
-        });
+    element.user= {
+      name : "John Doe",
+      point : '5000pt'
+    };
+  });
 
-      });
+  test('instantiating the element works', function() {
+    assert.equal(element.is, 't-header');
+  });
+
+  test('throw error if dataOptions attribute is null', function(){
+  });
+
+});
     </script>
   </body>
 </html>
