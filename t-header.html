@@ -138,7 +138,7 @@ Custom property | Description | Default
 	<!-- </div> -->
 				</div>
 				<div hidden$="[[!user]]" class="signup-section" >
-					<div hidden$="[[!user.isLoggedIn]]">
+					<div id="userSection" hidden$="[[!user.isLoggedIn]]">
 						<div hidden$="[[!_hasUrlTrigger(user.postLogin)]]">
 							<paper-button icon="[[user.postLogin.icon]]" class="action-button" on-tap="_userSectionTapped">
 								<iron-icon icon="[[user.postLogin.icon]]"></iron-icon>
@@ -157,7 +157,7 @@ Custom property | Description | Default
 							</paper-menu-button>
 						</div>
 					</div>
-					<div hidden$="[[user.isLoggedIn]]">
+					<div id="anonymousSection" hidden$="[[user.isLoggedIn]]">
 						<div hidden$="[[!_hasUrlTrigger(user.preLogin)]]">
 							<paper-button icon="[[user.preLogin.icon]]" class="action-button" on-tap="_userSectionTapped">
 								<iron-icon icon="[[user.preLogin.icon]]"></iron-icon>

@@ -12,18 +12,25 @@
   </head>
   <body>
 
-    <test-fixture id="basic">
+    <test-fixture id="loggedInFixture">
       <template>
-        <t-header data="[[data]]" user="[[user]]"></t-header>
+        <t-header data="[[data]]" user="[[loggedInUser]]"></t-header>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="anonymousFixture">
+      <template>
+        <t-header data="[[data]]" user="[[notLoggedInUser]]"></t-header>
       </template>
     </test-fixture>
 
     <script>
+
 suite('t-header', function() {
-  var element;
+  var loggedInHeader;
+  var anonymousHeader;
   setup(function(){
-    element = fixture('basic');
-    element.data = {
+    var data = {
       primaryMenu :{
         selectedIndex:0,
         items: [
@@ -153,55 +160,53 @@ suite('t-header', function() {
       logo : "http://www.tavisca.com/wp-content/uploads/travelnxt.png",
     };
 
-    element.user= {
+    var notLoggedInUser= {
       "isLoggedIn": true,
       "preLogin": {
-      "title": "Sign Up / Sign In",
-      "icon": "account-circle",
-      "code": "signup",
-      "url": "/register"
+        "title": "Sign Up / Sign In",
+        "icon": "account-circle",
+        "url": "/register"
       },
       "postLogin": {
-      "title": "John Doe",
-      "icon": "account-circle",
-      "code": "signedin",
-      "type": "select",
-      "selectedItem": 0,
-      "options": [
-      {
-      "title": "Profile",
-      "url": "/profile",
-      "value": "profile"
-      },
-      {
-      "title": "My Trips",
-      "url": "/trips",
-      "value": "trips"
-      },
-      {
-      "title": "Backoffice",
-      "url": "http://www.gotobackoffice.com",
-      "value": "sso",
-      "openInNewTab": true
-      }]
+        "title": "John Doe",
+        "icon": "account-circle"
       }
-      };
-});
+    };
 
-test('instantiating the element works', function() {
-  assert.equal(element.is, 't-header');
-});
 
-test('should not display user section if user property is not set', function() {
-  element.user = null;
-  assert.equal(element.querySelector('.signup-section').hidden, true);
-});
+    var loggedInUser= {
+      "isLoggedIn": true,
+      "preLogin": {
+        "title": "Sign Up / Sign In",
+        "icon": "account-circle",
+        "url": "/register"
+      },
+      "postLogin": {
+        "title": "John Doe",
+        "icon": "account-circle"
+      }
+    };
 
-test('should not display topStartmenu is it is empty', function() {
-  element.data.topStartMenu = [];
-});
+    loggedInHeader = fixture('loggedInFixture');
+    anonymousHeader = fixture('anonymousFixture');
+  });
+
+  test('instantiating the element works', function() {
+    assert.equal(loggedInHeader.is, 't-header');
+    assert.equal(anonymousHeader.is, 't-header');
+  });
+
+  test('should display prelogin section if the isloggedIn is false', function() {
+    assert.equal(anonymousHeader.$.anonymousSection.hidden, false);
+    assert.equal(anonymousHeader.$.userSection.hidden, true);
+  });
+
+  test('should display postLogin section if the isloggedIn is true', function() {
+    assert.equal(loggedInHeader.$.anonymousSection.hidden, true);
+    assert.equal(loggedInHeader.$.userSection.hidden, false);
+  });
 
 });
-  </script>
+    </script>
   </body>
 </html>
