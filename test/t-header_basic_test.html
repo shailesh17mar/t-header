@@ -105,7 +105,7 @@
             }
           ]
           },
-        secondaryMenu :[
+        mainToolbar :[
           {
             label : "Trip Cart",
             icon : "shopping-cart",
@@ -173,7 +173,7 @@
 
     function setupHeaderWithoutPrimaryMenu(){
       var data = {
-        secondaryMenu :[
+        mainToolbar :[
           {
             label : "Trip Cart",
             icon : "shopping-cart",
@@ -211,7 +211,7 @@
           phone : "1800-948-4455",
           phoneIcon : 'communication:phone'
         },
-        topStartMenu:[
+        topLeftToolbar:[
           {
             "title": "1800-958-1000",
             "icon":  "communication:phone",
@@ -352,7 +352,7 @@
           phone : "1800-948-4455",
           phoneIcon : 'communication:phone'
         },
-        topStartMenu:[
+        topLeftToolbar:[
           {
             "title": "1800-958-1000",
             "icon":  "communication:phone",
@@ -463,7 +463,7 @@
             }
           ]
         },
-        secondaryMenu :[
+        mainToolbar :[
           {
             label : "Trip Cart",
             icon : "shopping-cart",
@@ -477,7 +477,7 @@
           eventName : "Recent search clicked",
           count: 20
         },
-        topStartMenu:[
+        topLeftToolbar:[
           {
             "title": "1800-958-1000",
             "icon":  "communication:phone",
@@ -557,7 +557,7 @@
             }
           ]
         },
-        secondaryMenu :[
+        mainToolbar :[
           {
             label : "Trip Cart",
             icon : "shopping-cart",
@@ -565,7 +565,7 @@
             count: 20
           }
         ],
-        topStartMenu:[
+        topLeftToolbar:[
           {
             "title": "1800-958-1000",
             "icon":  "communication:phone",
@@ -676,7 +676,7 @@
             }
           ]
         },
-        secondaryMenu :[
+        mainToolbar :[
           {
             label : "Trip Cart",
             icon : "shopping-cart",
@@ -714,7 +714,7 @@
           phone : "1800-948-4455",
           phoneIcon : 'communication:phone'
         },
-        topStartMenu:[
+        topLeftToolbar:[
           {
             "title": "1800-958-1000",
             "icon":  "communication:phone",
@@ -797,7 +797,7 @@
     });
 
     test('should not display secondary menu if its not provided', function() {
-      assert.equal(headerWithoutSecondaryMenu.querySelector('#secondaryMenu').hidden, true);
+      assert.equal(headerWithoutSecondaryMenu.querySelector('#mainToolbar').hidden, true);
     });
 
     test('should not display top end menu if its not provided', function() {
@@ -809,18 +809,37 @@
     });
 
     test('should not display top start menu if its not provided', function() {
-      assert.equal(headerWithoutTopStartMenu.querySelector('#topStartMenu').hidden, true);
+      assert.equal(headerWithoutTopStartMenu.querySelector('#topLeftToolbar').hidden, true);
     });
 
-    test('should not display count bubble if count is 0', function() {
-      assert.equal(headerWithoutTopStartMenu.querySelector('.recent-search-count').hidden, true);
+    test('should fire event when tab is changed', function(){
+      assert.equal(headerWithoutTopStartMenu.querySelector('#topLeftToolbar').hidden, true);
     });
 
-  test('should not display count bubble if count is 0', function() {
-      assert.equal(headerWithoutTopStartMenu._isMobile, true);
+    test('should fire event when main toolbar is tapped', function(done){
+
+      header.addEventListener('t-header-main-toolbar-tapped', function(e){
+        assert.equal(e.detail.count, 20);
+        done();
+      })
+      flush(function(){
+
+        var mainToolbar = header.querySelector('.main-toolbar');
+        mainToolbar.click();
+      });
+      // mainToolar.click();
+    })
+
+    test('should fire event when dropdown selection is changed', function(done){
+      header.addEventListener('country_changed', function(e){
+        debugger;
+        assert.equal(e.detail.value, header.data.topEndMenu[0].options[0].value);
+        done();
+      })
     });
 
-  });
+  })
+  //
   </script>
 </body>
 </html>

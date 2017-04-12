@@ -54,8 +54,8 @@ Custom property | Description | Default
 	<iron-media-query query="(min-width : 320px) and (max-width : 480px)" query-matches="{{_isMobile}}"></iron-media-query>
 
 	<div class="layout horizontal topbar">
-		<div id="topStartMenu" hidden$="[[_hideIfNullOrEmpty(data.topStartMenu)]]" class="flex layout horizontal topbar-left">
-			<template is="dom-repeat" items="[[_getTopStartMenu(_isMobile,data.topStartMenu)]]">
+		<div id="topLeftToolbar" hidden$="[[_hideIfNullOrEmpty(data.topLeftToolbar)]]" class="flex layout horizontal topbar-left">
+			<template is="dom-repeat" items="[[_getTopStartMenu(_isMobile,data.topLeftToolbar)]]">
 				<div class="item">
 					<iron-icon class="icon" icon="[[item.icon]]"></iron-icon>
 					<a href$="[[item.url]]" >[[item.title]]</a>
@@ -64,13 +64,13 @@ Custom property | Description | Default
 		</div>
 
 		<div class="layout horizontal right-topbar " id="recentSearch" hidden$="[[!data.recentSearch]]">
-			<div class="right-item layout horizontal" data-event="[[data.recentSearch.eventName]]" on-tap="_recentSearchTapped"  >
+			<paper-button class="right-item layout horizontal" data-event="[[data.recentSearch.eventName]]" on-tap="_recentSearchTapped"  >
 				<div class="search" hidden$="{{_isMobile}}">
 					<iron-icon class="icon" icon="[[data.recentSearch.icon]]"></iron-icon>
 					<div hidden$="[[_hideCount(data.recentSearch.count)]]" class="notification-count recent-search-count">[[data.recentSearch.count]]</div>
 				</div>
 				<div class="right-text" hidden$="[[_notDesktop]]">[[data.recentSearch.label]]</div>
-			</div>
+			</paper-button>
 
 			<template is="dom-if" if="[[_containsMoreThanZeroItems(data.topEndMenu)]]">
 			<div class="layout horizontal top-end-menu " id="topEndMenu" hidden$="[[_isMobile]]">
@@ -82,13 +82,13 @@ Custom property | Description | Default
 								<paper-listbox  class="dropdown-content"  selected="{{ item.selectedItem }}">
 									<template is="dom-repeat" items="[[item.options]]" as="option">
 										<template is="dom-if" if="[[item.isIconMenu]]">
-											<paper-item data-icon$="[[option.icon]]" data-value$="[[option.value]]">
+											<paper-item data-icon$="[[option.icon]]" data-label$="[[option.value]]">
 												<iron-icon hidden$="[[!item.isIconMenu]]" class="icon" src="[[option.icon]]"></iron-icon>
 												[[option.title]]
 											</paper-item>
 										</template>
 										<template is="dom-if" if="[[!item.isIconMenu]]">
-											<paper-item  label="[[option.value]]">
+											<paper-item  label="[[option.value]]" data-value$="[[option.value]]" >
 												[[_getDropdownLabel(option.value, option.title)]]
 											</paper-item>
 										</template>
@@ -98,11 +98,11 @@ Custom property | Description | Default
 						</div>
 
 						<div hidden$="[[!item.isIconMenu]]">
-							<paper-menu-button dynamic-align  hidden$="[[!_notDesktop]]" class="dropdown icon-menu" on-iron-select="_countryChanged">
+							<paper-menu-button dynamic-align  hidden$="[[!_notDesktop]]" class="dropdown icon-menu" data-index$="[[index]]" on-iron-select="_topEndMenuChanged">
 								<paper-icon-button src="[[_getCurrentIcon(item.options, item.selectedItem)]]" class="dropdown-trigger"></paper-icon-button>
 								<paper-menu class="dropdown-content">
 									<template is="dom-repeat" items="[[item.options]]">
-										<paper-item data-icon$="[[item.icon]]"><iron-icon class="icon" src="[[item.icon]]"></iron-icon>[[item.title]]</paper-item>
+										<paper-item data-icon$="[[item.icon]]" data-label$="[[item.value]]"><iron-icon class="icon" src="[[item.icon]]"></iron-icon>[[item.title]]</paper-item>
 									</template>
 								</paper-menu>
 							</paper-menu-button >
@@ -157,7 +157,7 @@ Custom property | Description | Default
 			<paper-toolbar class="menu-content" >
 				<div>
 					<iron-icon class="icon" icon="menu" on-tap="_openDrawer" hidden$="[[!_isMobile]]"></iron-icon>
-					<img class="logo" src="[[data.logo]]" />
+					<paper-icon-button class="logo" src="[[data.logo.imageUrl]]" on-tap="_logoTapped"/>
 				</div>
 
 				<template is="dom-if" if="[[_containsMoreThanZeroItems(data.primaryMenu)]]">
@@ -169,15 +169,15 @@ Custom property | Description | Default
 						</paper-tabs>
 					</div>
 				</template>
-				<div class$="[[_getSecondaryMenuFlexRatio(data.secondaryMenu)]]" id="secondaryMenu" hidden$="[[_hideIfNullOrEmpty(data.secondaryMenu)]]">
-					<template is="dom-repeat" items="[[data.secondaryMenu]]">
-						<div class="secondary-menu horizontal layout" data-event="[[item.eventName]]" on-tap="_secondaryMenuChanged"  >
+				<div class$="[[_getSecondaryMenuFlexRatio(data.mainToolbar)]]" id="mainToolbar" hidden$="[[_hideIfNullOrEmpty(data.mainToolbar)]]">
+					<template is="dom-repeat" items="[[data.mainToolbar]]">
+						<paper-button class="secondary-menu main-toolbar horizontal layout" data-event="[[item.eventName]]" on-tap="_mainToolbarItemsTapped" >
 							<div >
 								<iron-icon class="icon" icon="[[item.icon]]"></iron-icon>
 								<div hidden$="[[_hideCount(item.count)]]" class="notification-count">[[item.count]]</div>
 							</div>
 							<div class="right-text" hidden$="[[_notDesktop]]">[[item.label]]</div>
-						</div>
+						</paper-button>
 					</template>
 
 				</div>
@@ -192,7 +192,7 @@ Custom property | Description | Default
 					</template>
 				</iron-selector>
 
-				<paper-item class="secondary-item drawer-item" data-event="[[data.recentSearch.eventName]]" on-tap="_secondaryMenuChanged">[[data.recentSearch.label]]
+				<paper-item class="secondary-item drawer-item" data-event="[[data.recentSearch.eventName]]" on-tap="_mainToolbarItemsTapped">[[data.recentSearch.label]]
 					<div hidden$="[[_hideCount(data.recentSearch.count)]]" class=" drawer-search">[[data.recentSearch.count]]</div>
 				</paper-item>
 
@@ -204,7 +204,7 @@ Custom property | Description | Default
 								<paper-dropdown-menu dynamic-align on-iron-select="_topEndMenuChanged" no-label-float class$="[[ _getDropdownClasses(item.isIconMenu)]]">
 									<paper-listbox class="dropdown-content" selected="{{ item.selectedItem }}">
 										<template is="dom-repeat" items="[[item.options]]" as="option" selected-item-label="label">
-											<paper-item label="[[option.value]]" data-value$="[[option.value]]" >[[_getDropdownLabel(option.value, option.title)]]
+											<paper-item label="[[option.value]]" data-label$="[[option.value]]" >[[_getDropdownLabel(option.value, option.title)]]
 											</paper-item>
 										</template>
 									</paper-listbox>
@@ -216,7 +216,7 @@ Custom property | Description | Default
 								<paper-icon-button src="[[_getCurrentIcon(item.options, item.selectedItem)]]" class="dropdown-trigger"></paper-icon-button>
 								<paper-menu dynamic-align class="dropdown-content" selected="{{item.selectedItem}}">
 									<template is="dom-repeat" items="[[item.options]]" as="option">
-										<paper-item data-icon$="[[option.icon]]"><iron-icon class="icon" src="[[option.icon]]"></iron-icon>[[option.title]]</paper-item>
+										<paper-item data-icon$="[[option.icon]]" data-label$="[[option.value]]"><iron-icon class="icon" src="[[option.icon]]"></iron-icon>[[option.title]]</paper-item>
 									</template>
 								</paper-menu>
 							</paper-menu-button >
@@ -251,7 +251,7 @@ Custom property | Description | Default
 			/**
 			* Describes all menus and sections present in the header
 			*
-			* @type {{primaryMenu: Object, secondaryMenu: Array<Object>, recentSearch: Object, topStartMenu: Array<Object>, topEndMenu: Array<Object>, logo: String}}
+			* @type {{primaryMenu: Object, mainToolbar: Array<Object>, recentSearch: Object, topLeftToolbar: Array<Object>, topEndMenu: Array<Object>, logo: String}}
 			*/
 			data: {
 				type: Object,
@@ -287,9 +287,9 @@ Custom property | Description | Default
 		// Observers & property validators
 		_dataChanged: function(data){
 			//if primaryMenu
-			//if secondaryMenu
+			//if mainToolbar
 			//if recentSearch
-			//if topStartMenu
+			//if topLeftToolbar
 			//if topEndMenu
 		},
 
@@ -313,7 +313,7 @@ Custom property | Description | Default
 			var selectedPaperItem =  e.detail.item;
 			var selectedItem = null;
 			selectedDropdown.options.forEach(function(item){
-				if(item.value === selectedPaperItem.getAttribute('data-value')){
+				if(item.value === selectedPaperItem.getAttribute('data-label')){
 					selectedItem = item;
 					return;
 				}
@@ -321,7 +321,7 @@ Custom property | Description | Default
 			if(selectedItem){
 				if(selectedDropdown.isIconMenu)
 				this._selectedFlag = selectedItem.icon;
-				this.fire(selectedDropdown.eventName);
+				this.fire(selectedDropdown.eventName, selectedItem);
 			}
 		},
 
@@ -351,8 +351,8 @@ Custom property | Description | Default
 			this.fire('t-header-recentsearch-tapped');
 		},
 
-		_secondaryMenuChanged: function(e){
-			this.fire('t-header-secondary-item-selected', e.model.item );
+		_mainToolbarItemsTapped: function(e){
+			this.fire('t-header-main-toolbar-tapped', e.model.item );
 			this.$.drawer.closeDrawer();
 		},
 
@@ -421,6 +421,10 @@ Custom property | Description | Default
 				return "flex-2 end-justified horizontal layout secondary-menu";
 			}
 				return "flex end-justified horizontal layout secondary-menu";
+		},
+
+		_logoTapped: function(e){
+			window.location.href = this.logo.url;
 		}
 	})
 	</script>

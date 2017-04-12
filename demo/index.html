@@ -80,7 +80,7 @@ t.data = {
 		}
 		]
 	},
-	secondaryMenu :[
+	mainToolbar :[
 	{
 		label : "Trip Cart",
 		icon : "shopping-cart",
@@ -94,7 +94,7 @@ t.data = {
 		eventName : "Recent search clicked",
 		count: 20
 	},
-	topStartMenu:[
+	topLeftToolbar:[
 	{
 		"title": "1800-958-1000",
 		"icon":  "communication:phone",
@@ -137,7 +137,10 @@ t.data = {
 		]
 	}
 	],
-	logo : "http://www.tavisca.com/wp-content/uploads/travelnxt.png",
+	logo : {
+		 imageUrl:"http://www.tavisca.com/wp-content/uploads/travelnxt.png",
+		url: 'https://google.com'
+}
 };
 
 t.user= {
@@ -156,9 +159,11 @@ t.user= {
 		"selectedItem": 0
 	}
 };
-t.addEventListener('t-header-primary-selected', function(e){
-console.log(e);
+
+t.addEventListener('t-header-main-toolbar-tapped', function(e){
+	console.log(e);
 });
+
 		</script>
 	</body>
 </html>
