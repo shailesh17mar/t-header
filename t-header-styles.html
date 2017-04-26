@@ -225,7 +225,7 @@ a{
   }
 
 
-  @media screen and (max-width: 1024px) and (min-width: 700px) {
+  @media screen and (max-width: 1024px) and (min-width: 768px) {
     .right-item{
       padding-left: 0;
       padding-right: 0;
@@ -252,7 +252,11 @@ a{
     }
   }
 
-  @media only screen and (min-width : 320px) and (max-width : 480px) {
+  @media only screen and (min-width : 320px) and (max-width : 767px) {
+    iron-icon{
+      width: 24px;
+      height: 24px;
+    }
     .secondary-item{
       font-size: 12px;
     }
@@ -269,6 +273,9 @@ a{
         color: var(--t-header-color, #a9afdf);
       };
     }
+    .drawer{
+      z-index:3;
+    }
 
     #drawer{
       z-index: 1;
@@ -277,7 +284,7 @@ a{
     }
 
     #drawer[selected="drawer"]{
-      z-index: 3;
+      z-index: 4;
     }
 
     paper-header-panel{

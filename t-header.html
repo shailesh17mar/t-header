@@ -49,8 +49,8 @@
   <template>
     <style is="custom-style" include="t-header-styles iron-flex iron-flex-alignment "></style>
 
-    <iron-media-query query="(max-width: 1024px) and (min-width: 700px)" query-matches="{{_isTablet}}"></iron-media-query>
-    <iron-media-query query="(min-width : 320px) and (max-width : 480px)" query-matches="{{_isMobile}}"></iron-media-query>
+    <iron-media-query query="(max-width: 1024px) and (min-width: 768px)" query-matches="{{_isTablet}}"></iron-media-query>
+    <iron-media-query query="(min-width : 320px) and (max-width : 767px)" query-matches="{{_isMobile}}"></iron-media-query>
 
     <div class="layout horizontal topbar end-justified">
       <div id="topLeftToolbar" hidden$="[[_hideIfNullOrEmpty(data.topLeftToolbar)]]" class="flex layout horizontal topbar-left">
@@ -63,7 +63,7 @@
       </div>
 
       <div class="layout horizontal right-topbar end-justified" id="recentSearch" hidden$="[[!data.recentSearch]]">
-        <paper-button class="right-item layout horizontal" hidden$="[[ _isMobile ]]" data-event="[[data.recentSearch.eventName]]" on-tap="_recentSearchTapped"  >
+        <paper-button class="recent-search right-item layout horizontal" hidden$="[[ _isMobile ]]" data-event="[[data.recentSearch.eventName]]" on-tap="_recentSearchTapped"  >
           <div class="button-icon" >
             <iron-icon class="icon" icon="[[data.recentSearch.icon]]"></iron-icon>
             <div hidden$="[[_hideCount(data.recentSearch.count)]]" class="notification-count recent-search-count">[[data.recentSearch.count]]</div>
@@ -77,7 +77,7 @@
               <div hidden$="[[!item.isIconMenu]]">
                 <iron-icon hidden$="[[_notDesktop]]" class="flag" src="[[_getCurrentIcon(item.options, item.selectedItem)]]"></iron-icon></div>
               <div>
-                <paper-dropdown-menu hidden$="[[_hideIfResponsiveScreenAndIconMenu(_notDesktop, item.isIconMenu)]]" no-label-float class$="[[_getDropdownClasses(item.isIconMenu)]]" on-iron-select="_topEndMenuChanged" >
+                <paper-dropdown-menu hidden$="[[_hideIfResponsiveScreenAndIconMenu(_notDesktop, item.isIconMenu)]]" no-label-float class$="top-end-menu [[_getDropdownClasses(item.isIconMenu)]]" on-iron-select="_topEndMenuChanged" >
                   <paper-listbox  class="dropdown-content"  selected="{{ item.selectedItem }}">
                     <template is="dom-repeat" items="[[item.options]]" as="option">
                       <template is="dom-if" if="[[item.isIconMenu]]">
@@ -320,7 +320,7 @@ Polymer({
     if(selectedTab.length> 0){
       this.fire('t-header-primary-item-selected', selectedTab[0]);
       if(selectedTab[0].url) {
-        window.location=  selectedTab[0].url;
+        window.location=   selectedTab[0].url;
         e.stopPropagation();
       }
     }
@@ -347,10 +347,6 @@ Polymer({
     this.$.drawer.openDrawer();
   },
 
-  _isNotIconMenu: function(item){
-    return !item.isIconMenu;
-  },
-
   _getDropdownLabel: function(title, value){
     return title + ' ' + value;
   },
@@ -358,7 +354,7 @@ Polymer({
   _userSectionTapped: function(e){
     if(this.user.isLoggedIn){
       if(this.postLogin.url)
-        window.location = this.postLogin.url;
+        window.location=this.postLogin.url;
     }
   },
 
@@ -411,8 +407,9 @@ Polymer({
   },
 
   _logoTapped: function(e){
-    window.location.href = this.logo.url;
+    window.location=this.logo.url
   }
+
 })
   </script>
 </dom-module>

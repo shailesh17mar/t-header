@@ -14,12 +14,13 @@
     "paper-menu-button": "PolymerElements/paper-menu-button#^1.5.2",
     "paper-menu": "PolymerElements/paper-menu#^1.2.2",
     "paper-item": "PolymerElements/paper-item#^1.2.1",
-    "paper-listbox": "PolymerElements/paper-listbox#^1.1.2"
+    "paper-listbox": "PolymerElements/paper-listbox#^1.1.2",
+    "web-component-tester": "t2ym/web-component-tester#wct6-plugin"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page",
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers",
-    "web-component-tester": "^4.0.0",
+    "web-component-tester": "6.0.0-prerelease.1",
     "webcomponentsjs": "webcomponents/webcomponentsjs"
   }
 }
