@@ -869,6 +869,33 @@ suite('t-header', function() {
     });
   });
 
+  test('should set isLoggedIn to false on t-header-logout event', function(done){
+    headerWithoutRecentSearch.fire('t-header-logout');
+    setTimeout(function(){
+      debugger;
+      assert.equal(headerWithoutRecentSearch.user.isLoggedIn, false);
+      done();
+    });
+  });
+
+  test('should set isLoggedIn to true on t-header-login event', function(done){
+    header.fire('t-header-login',{name: 'John Doe'});
+    flush(function(){
+      assert.equal(header.user.isLoggedIn, true);
+      assert.equal(header.user.postLogin.title, 'John Doe');
+      done();
+    });
+  });
+
+
+  test('should change primary menu selection on t-header-item-select event ', function(done){
+    header.fire('t-header-item-select',2);
+    flush(function(){
+      assert.equal(header.data.primaryMenu.selectedIndex, 2);
+      done();
+    });
+  });
+
 })
     </script>
   </body>

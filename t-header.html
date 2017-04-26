@@ -42,7 +42,6 @@
   @group Travelnxt Elements
   @element t-header
   @demo demo/index.html
-
 -->
 
 <dom-module id="t-header">
@@ -235,6 +234,12 @@
 Polymer({
   is: 't-header',
 
+  listeners:{
+    't-header-login': '_onLogin',
+    't-header-logout': '_onLogout',
+    't-header-item-select': '_primaryMenuChanged',
+  },
+
   properties: {
     /**
      * Fired when primary menu selection is changed
@@ -310,6 +315,19 @@ Polymer({
         this._selectedFlag = selectedItem.icon;
       this.fire(selectedDropdown.eventName, selectedItem);
     }
+  },
+
+  _onLogin: function(e, detail){
+    this.user.postLogin.title = detail.name;
+    this.set('user.isLoggedIn', true);
+  },
+
+  _onLogout: function(e, detail){
+    this.set('user.isLoggedIn', false);
+  },
+
+  _primaryMenuChanged: function(e, detail){
+    this.set('data.primaryMenu.selectedIndex', detail);
   },
 
   _tabChanged: function(e,index){
