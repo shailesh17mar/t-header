@@ -162,7 +162,7 @@
 
         <template is="dom-if" if="[[_containsMoreThanZeroItems(data.primaryMenu)]]">
           <div class="flex tabs" >
-            <paper-tabs hidden$="[[_isMobile]]" class="flex primary-menu" scrollable selected="{{data.primaryMenu.selectedIndex}}" on-iron-select="_tabChanged">
+            <paper-tabs noink hidden$="[[_isMobile]]" class="flex primary-menu" scrollable selected="{{data.primaryMenu.selectedIndex}}" on-iron-select="_tabChanged">
               <template is="dom-repeat" items="[[data.primaryMenu.items]]">
                 <paper-tab><iron-icon class="icon" icon="[[item.icon]]"></iron-icon>[[item.label]]</paper-tab>
               </template>
@@ -427,7 +427,6 @@ Polymer({
   _logoTapped: function(e){
     window.location=this.logo.url
   }
-
 })
   </script>
 </dom-module>

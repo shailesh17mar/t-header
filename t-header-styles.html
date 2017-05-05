@@ -22,11 +22,19 @@
     color: #fff;
   }
 }
+
+  paper-button{
+    font-weight: normal !important;
+  }
+  paper-item{
+    font-size: 14px;
+  }
 :host {
   display: block;
   font-size: 12px;
   max-width: 1200px;
   margin: 0 auto;
+  font-family: "Roboto";
 
 --paper-toolbar-height: 60px;
   --iron-icon-width:18px;
@@ -105,7 +113,7 @@ a{
 
   .secondary-menu{
     margin-left: 10px;
-    margin-top:2px;
+    margin-top:4px;
     text-transform: uppercase;
     height: 48px;
     position: relative;
@@ -296,12 +304,12 @@ a{
     }
 
     .drawer-item{
-      border-bottom: solid 1px var(--t-header-color, #a9afdf);
+      border-bottom: solid 1px rgba(255,255,255,.12);
     }
 
     .iron-selected{
-      color: #fff;
-      background: var(--t-header-drawer-selected-bg, #3f51b5);
+      /* color: #fff; */
+      /* background: var(--t-header-drawer-selected-bg, #3f51b5); */
     }
 
     .logo{
