@@ -1,0 +1,37 @@
+{
+  "name": "t-header",
+  "description": "Header component",
+  "main": "t-header.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer",
+    "paper-header-panel": "PolymerElements/paper-header-panel",
+    "paper-tabs": "PolymerElements/paper-tabs",
+    "iron-icon": "PolymerElements/iron-icon",
+    "paper-drawer-panel": "PolymerElements/paper-drawer-panel",
+    "paper-toolbar": "PolymerElements/paper-toolbar",
+    "iron-media-query": "PolymerElements/iron-media-query",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.5.0",
+    "paper-menu-button": "PolymerElements/paper-menu-button#^1.5.2",
+    "paper-menu": "PolymerElements/paper-menu#^1.2.2",
+    "paper-item": "PolymerElements/paper-item#^1.2.1",
+    "paper-listbox": "PolymerElements/paper-listbox#^1.1.2",
+    "web-component-tester": "t2ym/web-component-tester#wct6-plugin"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers",
+    "web-component-tester": "6.0.0-prerelease.1",
+    "webcomponentsjs": "webcomponents/webcomponentsjs"
+  },
+  "homepage": "https://github.com/shailesh17mar/t-header",
+  "_release": "87fbf5316b",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "87fbf5316b286a717ccbc62bf31a40fb584bb81d"
+  },
+  "_source": "https://github.com/shailesh17mar/t-header.git",
+  "_target": "master",
+  "_originalSource": "shailesh17mar/t-header",
+  "_direct": true
+}
