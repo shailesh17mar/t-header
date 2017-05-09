@@ -186,7 +186,7 @@
 
     <paper-drawer-panel disable-edge-swipe id="drawer" hidden$="[[!_isMobile]]" drawer>
       <div drawer class="drawer">
-        <iron-selector selected="0">
+        <iron-selector selected="{{data.primaryMenu.selectedIndex}}"  on-iron-select="_primaryMenuChanged">
           <template is="dom-repeat" items="[[data.primaryMenu.items]]">
             <paper-item class="drawer-item"><iron-icon class="icon" icon="[[item.icon]]"></iron-icon>[[item.label]]</paper-item>
           </template>
@@ -227,7 +227,6 @@
 
       </div>
     </paper-drawer-panel>
-
   </template>
 
   <script>
@@ -327,7 +326,12 @@ Polymer({
   },
 
   _primaryMenuChanged: function(e, detail){
-    this.set('data.primaryMenu.selectedIndex', detail);
+    if(typeof(detail) === 'number')
+      this.set('data.primaryMenu.selectedIndex', detail);
+    else{
+      this._tabChanged(null, e.target.selected);
+      this.$.drawer.closeDrawer();
+    }
   },
 
   _tabChanged: function(e,index){
@@ -425,7 +429,8 @@ Polymer({
   },
 
   _logoTapped: function(e){
-    window.location=this.logo.url
+    window.location=this.data.logo.url;
+    return false;
   }
 })
   </script>
